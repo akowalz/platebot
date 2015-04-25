@@ -1,3 +1,5 @@
+require 'twilio-ruby'
+
 class CoopersController < ApplicationController
 
   def new
@@ -8,7 +10,7 @@ class CoopersController < ApplicationController
     cooper = Cooper.new(cooper_params)
     if cooper.valid?
       cooper.save
-      flash[:success] = "Your account has been created!"
+      flash[:success] = "Your account has been created! Text PlateBot 'status' to confirm!"
       redirect_to root_path
     else
       flash[:error] = cooper.errors.full_messages

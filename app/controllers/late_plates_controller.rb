@@ -32,7 +32,7 @@ class LatePlatesController < ApplicationController
 
 
       if is_help_command(body)
-        return "Here are some things I understand:\n" +
+        return "Try something like...:\n" +
                 "'Today' - add a late plate for today\n" +
                 "'friday' - add a late for Friday\n" +
                 "'status' - check if you have a plate tonight\n" +
@@ -67,11 +67,11 @@ class LatePlatesController < ApplicationController
         time = DateTime.parse(parsed_date.to_s)
       end
 
-      if !cooper.has_plate_for(time)
+      if !cooper.has_plate_for_day(time)
         cooper.late_plates.create( { dt: time } )
-        return "Hello, #{cooper.name}! Your late plate has been added for #{simple_time(time)}! If this was a mistake, text 'undo'. #{nice_phrase}"
+        return "Hello, #{cooper.name}! Your late plate has been added for #{simple_time(time)}! You can undo this by texting 'undo'. #{nice_phrase}"
       else
-        return "#{cooper.name}, you already have a late plate added for #{simple_time(time)}"
+        return "#{cooper.name}, you already have a late plate for #{simple_time(time)}"
       end
 
     else
@@ -86,7 +86,7 @@ class LatePlatesController < ApplicationController
   end
 
   def check_command(text, commands)
-    text = text.downcase.strip
+    text = text.downcase.strip.gsub(/[^\w\s]/,'')
     commands.inject(false) do |matched, command|
       matched || command == text
     end
@@ -98,8 +98,7 @@ class LatePlatesController < ApplicationController
       "You're awesome!",
       "Keep doin' you!",
       "Have a fantastic day!",
-      "Keep up the good work!",
-      "I hope you like vegetarian food!",
+      "Hope you like vegetarian!",
       "Yum yum yum !!!",
       "Keep on truckin'!",
       "Co-op-tastic!"

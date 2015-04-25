@@ -46,4 +46,11 @@ class CooperTest < ActiveSupport::TestCase
     @cooper.house = ["Elmwood","Foster"].sample
     assert @cooper.valid?
   end
+
+  test "does not allow two users to have the same phone number" do
+    @cooper.save
+    copy = Cooper.new(fname: "a", lname: "b", number: @cooper.number, house: "Foster")
+    assert_not copy.valid?
+    assert_not copy.save
+  end
 end

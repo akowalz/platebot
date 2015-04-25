@@ -5,7 +5,7 @@ class LatePlateTest < ActiveSupport::TestCase
     f = (0..10).to_a.sample
     e = f + 2
 
-    fc = Cooper.create(fname: "f", lname: "f", house: "Foster", number: "+12223334444")
+    fc = Cooper.create(fname: "f", lname: "f", house: "Foster", number: "+12223334464")
     ec = Cooper.create(fname: "e", lname: "e", house: "Elmwood", number: "+12223334444")
 
     f.times do

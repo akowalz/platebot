@@ -60,14 +60,14 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "removes coopers most recent late plate when given command" do
     @cooper.late_plates.create( dt: DateTime.now )
     assert_difference -> { @cooper.late_plates.count }, -1 do
-      post :add, { From: @cooper.number, Body: "Undo" }
+      post :add, { From: @cooper.number, Body: "Undo!" }
     end
     assert_select "Message", /removed/i
   end
 
   test "let's cooper know there was no plate to destroy" do
     assert_no_difference -> { @cooper.late_plates.count }, -1 do
-      post :add, { From: @cooper.number, Body: "remove" }
+      post :add, { From: @cooper.number, Body: "remove." }
     end
     assert_select "Message", /don't/
   end

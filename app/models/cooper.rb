@@ -4,15 +4,16 @@ class Cooper < ActiveRecord::Base
 
   validates :fname, { presence: true }
   validates :lname, { presence: true }
+  validates :number, { uniqueness: true }
   validates_format_of :number, { with: /\+1\d{10}/ }
   validates_format_of :house, { with: /(Foster)|(Elmwood)/ }
 
-  def has_plate_for(day)
+  def has_plate_for_day(day)
     late_plates.for_day(day).count > 0
   end
 
   def has_plate_for_today
-    has_plate_for(DateTime.now)
+    has_plate_for_day(DateTime.now)
   end
 
   def name
