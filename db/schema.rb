@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150425220118) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "coopers", force: :cascade do |t|
     t.string   "number"
     t.datetime "created_at", null: false
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 20150425220118) do
     t.string   "house"
   end
 
-  add_index "coopers", ["number"], name: "index_coopers_on_number"
+  add_index "coopers", ["number"], name: "index_coopers_on_number", using: :btree
 
   create_table "late_plates", force: :cascade do |t|
     t.integer  "cooper_id"
