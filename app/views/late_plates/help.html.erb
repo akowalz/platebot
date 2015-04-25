@@ -1,0 +1,145 @@
+<div class="row about">
+  <div class="col-md-8">
+  <h1>Help</h1>
+  <h3>About PlateBot</h3>
+
+  <p>PlateBot lets you add late plates through text messages! It was created
+  specifically for MOSAIC Co-op in Evanston, IL.</p>
+
+  <p>PlateBot utilizes <%= link_to "Twilio", "http://twilio.com" %> to process
+  and send text messages.  If you're a developer and are curious how it was made,
+  check it out on <%= link_to "Github", "#" %></p>
+
+  <h3>Getting Started</h3>
+
+  <p>PlateBot will only add late plates for numbers it recognizes, so be sure
+  to create an account so it recognizes you.  You can do that using the big green
+  button at the top of the page!  Phone numbers have to be 11 digits, including
+  the leading 1 and an area code.  For example: 1-222-333-3334</p>
+
+  <p>Once you have your account set up, you'll be able to text commands to the
+  special PlateBot number, which I am scared to put on this website, so ask a
+  fellow co-oper what it is!</p>
+
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+      <div class="panel-title">Important note!</div>
+    </div>
+
+    <div class="panel-body">
+    <p>When you text PlateBot, it will
+    <em>always</em> send a confirmation text, whether the plate was added or not.
+    If you do not receive a confirmation text, something went wrong, and
+    you should add your late plate the old fashioned way.<p>
+    </div>
+  </div>
+
+
+  <h3>Adding Late Plates</h3>
+  <p>PlateBot understands a lot of commands.  To add a late plate for today text:</p>
+
+  <div class="panel panel-success">
+    <div class="panel-body">
+    add
+    </div>
+  </div>
+
+  <p>you can also specify the day you want, so for today it would be:</p>
+  <div class="panel panel-success">
+    <div class="panel-body">
+    today
+    </div>
+  </div>
+
+  <p>to add a late plate for tomorrow, use:</p>
+
+  <div class="panel panel-success">
+    <div class="panel-body">
+    tomorrow
+    </div>
+  </div>
+
+  <p>to add a late plate for a week from Friday, text:</p>
+  <div class="panel panel-success">
+    <div class="panel-body">
+    a week from friday
+    </div>
+  </div>
+
+  <p>to add a late plate for April 15th, text:</p>
+  <div class="panel panel-success">
+    <div class="panel-body">
+    April 25th
+    </div>
+  </div>
+
+  <p>...getting it?  In fact, PlateBot uses some snazzy <em>Natural Language
+    Processing</em> to understand any date query you throw at it! So go nuts!!  If you
+  give it something it doesn't understand it'll let you know. And if you make a
+  mistake or PlateBot misinterprets your query, you can easily undo it, which
+  brings us too...</p>
+
+  <h3>Removing Late Plates</h3>
+
+  <p>If you make a mistake, you can easily undo your most recent addition.</p>
+
+  Just text:
+  <div class="panel panel-success">
+    <div class="panel-body">
+    undo
+    </div>
+  </div>
+
+  <p>Technically, you can use any of the following commands to undo your late plate:</p>
+  <ul>
+    <% @undo.each do |u| %>
+      <li><%= u %></li>
+    <% end %>
+  </ul>
+
+  <h3>Check your status</h3>
+  <p>If you forget if you've added a late plate, or want
+  to make sure a request went through, you can check your status for the day.</p>
+
+  Text:
+  <div class="panel panel-success">
+    <div class="panel-body">
+    status
+    </div>
+  </div>
+
+
+  <p>Status will tell you if a have a late plate for today only. There is
+  currently no way to view all upcoming late plates</p>
+
+  <p>The following are valid status commands:</p>
+  <ul>
+    <% @status.each do |u| %>
+      <li><%= u %></li>
+    <% end %>
+  </ul>
+
+  <h3>Ask for help</h3>
+
+  <p>If you forget how to use PlateBot on the go, you can
+  ask for help. Unfortunately, the command 'help' won't work because of some
+  legal complications...but you can use a 'howto'</p>
+
+  Text:
+  <div class="panel panel-success">
+    <div class="panel-body">
+    howto
+    </div>
+  </div>
+
+  <p>All of the following are valid help commands:</p>
+  <ul>
+    <% @help.each do |u| %>
+      <li><%= u %></li>
+    <% end %>
+  </ul>
+
+
+  <p>...and that's it! If something goes wrong, talk to Alex K.</p>
+  </div>
+</div>

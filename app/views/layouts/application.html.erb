@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PlateBot</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <%= link_to "PlateBot", root_path, class: "navbar-brand" %>
+    <%= link_to "Help", help_path, class: "navbar-right navbar-text" %>
+    <%= link_to "Create your account", new_cooper_path, class: "navbar-right btn btn-success navbar-btn" %>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <% if flash[:error] %>
+      <div class="alert alert-danger col-md-6 col-md-offset-3">
+        <strong>There were errors creating you account</strong>
+        <ul>
+          <% flash[:error].each do |e| %>
+            <li><%= e %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if flash[:success] %>
+      <div class="alert alert-success col-md-6 col-md-offset-3">
+        <strong><%= flash[:success] %></strong>
+      </div>
+    <% end %>
+  </div>
+
+  <%= yield %>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+<h1 class="text-center"> <%= @today %> </h1>
+
+<div class="col-md-6">
+  <h2>Foster (the Zooo)</h2>
+  <%= render "plate_table", { plates: @plates.for_foster } %>
+</div>
+
+<div class="col-md-6">
+  <h2>Elmwood</h2>
+  <%= render "plate_table", { plates: @plates.for_elmwood } %>
+</div>
+
+

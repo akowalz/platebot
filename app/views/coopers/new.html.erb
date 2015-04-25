@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h1>Create your account</h1>
+    <%= form_for @cooper, url: { action: "create" } do |f| %>
+      <div class="form-group">
+        <%= f.label :fname, "First name" %>
+        <%= f.text_field :fname, class: "form-control" %>
+
+        <%= f.label :lname, "Last name" %>
+        <%= f.text_field :lname, class: "form-control" %>
+
+        <%= f.label :number, "11 digit phone number (including leading 1 and area code)" %>
+        <%= f.text_field :number, class: "form-control" %>
+
+        <%= f.label :house, "Your house" %>
+        <%= f.radio_button :house, "Foster" %>
+        <%= f.label :house_child, "Foster" %>
+        <%= f.radio_button :house, "Elmwood" %>
+        <%= f.label :house_child, "Elmwood" %>
+
+        <%= f.submit "Create your account", class: "btn btn-success form-control" %>
+      </div>
+    <% end %>
+  </div>
+</div>
