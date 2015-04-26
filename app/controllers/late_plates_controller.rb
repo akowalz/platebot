@@ -64,18 +64,20 @@ class LatePlatesController < ApplicationController
           return "Sorry, #{cooper.name}, I didn't get that.  Text 'howto' to see what I understand!"
         end
 
+        # gotta convert from Time to DateTime
         time = DateTime.parse(parsed_date.to_s)
       end
 
       if !cooper.has_plate_for_day(time)
         cooper.late_plates.create( { dt: time } )
-        return "Hello, #{cooper.name}! Your late plate has been added for #{simple_time(time)}! You can undo this by texting 'undo'. #{nice_phrase}"
+        return "Hello, #{cooper.name}! Your late plate has been added for #{simple_time(time)}!" +
+               "You can undo this by texting 'undo'. #{nice_phrase}"
       else
         return "#{cooper.name}, you already have a late plate for #{simple_time(time)}"
       end
 
     else
-      return "Sorry, I don't recognize this number. Add it lateplates.mosaiccoop.org"
+      return "Sorry, I don't recognize this number. Add it plate-bot.com"
     end
   end
 

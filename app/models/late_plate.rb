@@ -1,5 +1,6 @@
 class LatePlate < ActiveRecord::Base
   belongs_to :cooper
+  before_save { self.dt ||= DateTime.now }
 
   def simple_time_with_date
     self.created_at
