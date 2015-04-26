@@ -77,7 +77,7 @@ class LatePlatesController < ApplicationController
       end
 
     else
-      return "Sorry, I don't recognize this number. Add it plate-bot.com"
+      return "Sorry, I don't recognize this number. Add it at plate-bot.com"
     end
   end
 
