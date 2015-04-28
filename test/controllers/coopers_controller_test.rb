@@ -27,7 +27,7 @@ class CoopersControllerTest < ActionController::TestCase
         house: ["Foster","Elmwood"].sample,
         number: "+14446666" }
       }
-      assert_redirected_to new_cooper_path
+      assert_redirected_to signup_path
       assert_not_nil flash[:error]
     end
   end

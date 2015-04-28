@@ -9,27 +9,34 @@ class LatePlatesController < ApplicationController
   STATUS_COMMANDS = ["status", "check"]
 
   def add
-    from = params[:From]
-    body = params[:Body]
+    from_number = params[:From]
+    message_body = params[:Body]
 
-    message = create_message(from, body)
+    message = create_message(from_number, message_body)
 
-    twiml = Twilio::TwiML::Response.new do |r|
-      r.Message(message)
-    end
+    twiml = Twilio::TwiML::Response.new { |r| r.Message(message) }
 
     render xml: twiml.to_xml, layout: false
   end
 
   def index
-    now = DateTime.now
     @plates = LatePlate.for_today
-    @today = simple_time(now)
+    @today = simple_time(DateTime.now)
+    @upcoming = LatePlate.upcoming
   end
 
-  def create_message(from, body)
-    if cooper = Cooper.find_by({ number: from })
+  def help
+    @undo = UNDO_COMMANDS
+    @help = HELP_COMMANDS
+    @status = STATUS_COMMANDS
+  end
 
+  private
+
+    def create_message(from, body)
+      unless cooper = Cooper.find_by({ number: from })
+        return "Sorry, I don't recognize this number. Add it at plate-bot.com"
+      end
 
       if is_help_command(body)
         return "Try something like...:\n" +
@@ -75,55 +82,43 @@ class LatePlatesController < ApplicationController
       else
         return "#{cooper.name}, you already have a late plate for #{simple_time(time)}"
       end
-
-    else
-      return "Sorry, I don't recognize this number. Add it at plate-bot.com"
     end
-  end
 
-  def help
-    @undo = UNDO_COMMANDS
-    @help = HELP_COMMANDS
-    @status = STATUS_COMMANDS
-  end
-
-  def check_command(text, commands)
-    text = text.downcase.strip.gsub(/[^\w\s]/,'')
-    commands.inject(false) do |matched, command|
-      matched || command == text
+    def check_command(text, commands)
+      text = text.downcase.strip.gsub(/[^\w\s]/,'')
+      commands.any? { |command| command == text }
     end
-  end
 
-  def nice_phrase
-    [
-      "Have a great day!",
-      "You're awesome!",
-      "Keep doin' you!",
-      "Have a fantastic day!",
-      "Hope you like vegetarian!",
-      "Yum yum yum !!!",
-      "Keep on truckin'!",
-      "Co-op-tastic!"
-    ].sample
-  end
+    def nice_phrase
+      [
+        "Have a great day!",
+        "You're awesome!",
+        "Keep doin' you!",
+        "Have a fantastic day!",
+        "Hope you like vegetarian!",
+        "Yum yum yum !!!",
+        "Keep on truckin'!",
+        "Co-op-tastic!"
+      ].sample
+    end
 
-  def simple_time(time)
-    time.strftime("%A, %B %e")
-  end
+    def simple_time(time)
+      time.strftime("%A, %B %e")
+    end
 
-  def is_add_command(text)
-    check_command(text, ADD_COMMANDS)
-  end
+    def is_add_command(text)
+      check_command(text, ADD_COMMANDS)
+    end
 
-  def is_undo_command(text)
-    check_command(text, UNDO_COMMANDS)
-  end
+    def is_undo_command(text)
+      check_command(text, UNDO_COMMANDS)
+    end
 
-  def is_status_command(text)
-    check_command(text, STATUS_COMMANDS)
-  end
+    def is_status_command(text)
+      check_command(text, STATUS_COMMANDS)
+    end
 
-  def is_help_command(text)
-    check_command(text, HELP_COMMANDS)
-  end
+    def is_help_command(text)
+      check_command(text, HELP_COMMANDS)
+    end
 end

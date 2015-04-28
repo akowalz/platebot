@@ -12,11 +12,12 @@ class CooperTest < ActiveSupport::TestCase
   test "sanitizes somewhat wrong legal phone numbers" do
     numbers = [
       "+17863738989",
-      "11112223333",
-      "1111-222-3333",
-      "+1111 222 3333",
-      "1(111) 222 3333",
-      "1(111)-222-3333"
+      "7863738989",
+      "1112223333",
+      "111-222-3333",
+      "111 222 3333",
+      "(111) 222 3333",
+      "(111)-222-3333"
     ]
 
     numbers.each do |number|
@@ -27,7 +28,7 @@ class CooperTest < ActiveSupport::TestCase
 
   test "does not take totally wrong numbers" do
     numbers = [
-      "111-2223 334",
+      "11-2223 334",
       "111-222334",
       "(11) 222 3333",
       "222-3333",

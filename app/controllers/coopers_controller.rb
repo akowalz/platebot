@@ -14,15 +14,12 @@ class CoopersController < ApplicationController
       redirect_to root_path
     else
       flash[:error] = cooper.errors.full_messages
-      redirect_to new_cooper_path
+      redirect_to signup_path
     end
   end
 
   def show
     # @plates = Cooper.find(params[:id]).late_plates.upcoming
-  end
-
-  def help
   end
 
   private

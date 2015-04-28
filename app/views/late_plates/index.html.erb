@@ -14,6 +14,35 @@
   </div>
 </div>
 
+<% unless @upcoming.empty? %>
+  <button class="btn btn-primary" id="show-hide-upcoming">
+    Show Future Late Plates
+  </button>
+  <div class="row" id="upcoming">
+    <h3>Future Late Plates (not for today)</h3>
+    <div class="col-md-8">
+      <table class="table table-striped table-hover">
+        <thead>
+          <th>Name</th>
+          <th>For dinner on</th>
+          <th>Added at</th>
+          <th>House</th>
+        </thead>
+        <tbody>
+          <% @upcoming.each do |p| %>
+            <tr>
+              <td><%= p.cooper.initialized_name %></td>
+              <td><%= p.simple_time_for_day %></td>
+              <td><%= p.simple_time_with_date %></td>
+              <td><%= p.cooper.house %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
+
 <hr>
 
 <h3>Old School...</h3>

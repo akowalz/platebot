@@ -14,3 +14,15 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+$(function() {
+  $("#show-hide-upcoming").click(function() {
+      $("#upcoming").slideToggle();
+      if ($(this).text().match(/Show/)) {
+        $(this).text("Hide Future Late Plates")
+      } else {
+        $(this).text("Show Future Late Plates")
+      }
+    }
+  );
+});

@@ -6,14 +6,14 @@
         <%= f.label :fname, "First name" %>
         <%= f.text_field :fname, class: "form-control" %>
 
-        <%= f.label :lname, "Last name" %>
+        <%= f.label :lname, "Last name (or initial)" %>
         <%= f.text_field :lname, class: "form-control" %>
 
-        <%= f.label :number, "11 digit phone number (including leading 1 and area code)" %>
-        <%= f.text_field :number, class: "form-control" %>
+        <%= f.label :number, "10 digit phone number (including area code)" %>
+        <%= f.text_field :number, class: "form-control", placeholder: "333-444-5555" %>
 
         <%= f.label :house, "Your house" %>
-        <%= f.radio_button :house, "Foster" %>
+        <%= f.radio_button :house, "Foster", selected: true %>
         <%= f.label :house_child, "Foster" %>
         <%= f.radio_button :house, "Elmwood" %>
         <%= f.label :house_child, "Elmwood" %>

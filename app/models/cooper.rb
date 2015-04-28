@@ -26,6 +26,6 @@ class Cooper < ActiveRecord::Base
 
   def sanitize_number
     self.number.gsub!(/[^\d\+]/,'')
-    self.number = "+" + self.number if self.number[0] != "+"
+    self.number = "+1" + self.number if self.number[0..1] != "+1"
   end
 end

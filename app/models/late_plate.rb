@@ -8,6 +8,10 @@ class LatePlate < ActiveRecord::Base
       .strftime("%l:%M %P on %A, %B %e")
   end
 
+  def simple_time_for_day
+    self.dt.strftime("%A, %B %e")
+  end
+
   def self.for_today
     self.for_day(DateTime.now)
   end
@@ -17,7 +21,7 @@ class LatePlate < ActiveRecord::Base
   end
 
   def self.upcoming
-    where(" dt >= ?", DateTime.beginning_of_day)
+    where(" dt >= ?", DateTime.now.end_of_day).order(:dt)
   end
 
   def self.for_foster
