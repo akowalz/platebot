@@ -10,16 +10,12 @@ class CoopersController < ApplicationController
     cooper = Cooper.new(cooper_params)
     if cooper.valid?
       cooper.save
-      flash[:success] = "Your account has been created! Text PlateBot 'status' to confirm!"
+      flash[:success] = "Success! PlateBot now knows your number. Text PlateBot 'status' to test it out"
       redirect_to root_path
     else
       flash[:error] = cooper.errors.full_messages
       redirect_to signup_path
     end
-  end
-
-  def show
-    # @plates = Cooper.find(params[:id]).late_plates.upcoming
   end
 
   private

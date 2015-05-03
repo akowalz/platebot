@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <h1>Create your account</h1>
+    <h1>Add your number</h1>
     <%= form_for @cooper, url: { action: "create" } do |f| %>
       <div class="form-group">
         <%= f.label :fname, "First name" %>
@@ -18,7 +18,7 @@
         <%= f.radio_button :house, "Elmwood" %>
         <%= f.label :house_child, "Elmwood" %>
 
-        <%= f.submit "Create your account", class: "btn btn-success form-control" %>
+        <%= f.submit "Submit", class: "btn btn-success form-control" %>
       </div>
     <% end %>
   </div>
