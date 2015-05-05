@@ -10,7 +10,7 @@
         <%= f.text_field :lname, class: "form-control" %>
 
         <%= f.label :number, "10 digit phone number (including area code)" %>
-        <%= f.text_field :number, class: "form-control", placeholder: "333-444-5555" %>
+        <%= f.telephone_field :number, class: "form-control", placeholder: "333-444-5555" %>
 
         <%= f.label :house, "Your house" %>
         <%= f.radio_button :house, "Foster", selected: true %>

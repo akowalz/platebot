@@ -35,6 +35,11 @@
         <strong><%= flash[:success] %></strong>
       </div>
     <% end %>
+    <% if flash[:warning] %>
+      <div class="alert alert-warning col-md-6 col-md-offset-3">
+        <strong><%= flash[:warning] %></strong>
+      </div>
+    <% end %>
   </div>
 
   <%= yield %>
