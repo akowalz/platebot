@@ -43,6 +43,7 @@
           <th>For dinner on</th>
           <th>Added at</th>
           <th>House</th>
+          <th></th>
         </thead>
         <tbody>
           <% @upcoming.each do |p| %>
@@ -51,6 +52,13 @@
               <td><%= p.simple_time_for_day %></td>
               <td><%= p.simple_time_with_date %></td>
               <td><%= p.cooper.house %></td>
+              <% if current_user && p.cooper.id == current_user.id %>
+                <td>
+                  <%= link_to "Remove", late_plate_path(p.id), method: :delete %>
+                </td>
+              <% else %>
+                <td></td>
+              <% end %>
             </tr>
           <% end %>
         </tbody>
