@@ -1,6 +1,6 @@
 class LatePlate < ActiveRecord::Base
   belongs_to :cooper
-  before_save { self.dt ||= DateTime.now }
+  before_save :verify_late_plate
 
   def simple_time_with_date
     self.created_at
@@ -30,5 +30,12 @@ class LatePlate < ActiveRecord::Base
 
   def self.for_elmwood
     joins(:cooper).where("coopers.house LIKE ?", "Elmwood")
+  end
+
+  private
+
+  def verify_late_plate
+    self.dt ||= DateTime.now
+    return false if cooper && cooper.has_plate_for_day(self.dt)
   end
 end

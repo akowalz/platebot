@@ -13,14 +13,18 @@
   <div class="container-fluid">
     <%= link_to "PlateBot", root_path, class: "navbar-brand" %>
     <%= link_to "Help", help_path, class: "navbar-right navbar-text" %>
-    <%= link_to "Add your number", signup_path, class: "navbar-right btn btn-success navbar-btn" %>
+    <% if current_user %>
+      <%= link_to "Sign out", signout_path, method: "delete", class: "navbar-right navbar-text" %>
+    <% else %>
+      <%= link_to "Sign in with Google", "/auth/google_oauth2", class: "btn btn-success navbar-btn navbar-right" %>
+    <% end %>
   </div>
 </nav>
 
 <div class="container">
   <div class="row">
     <% if flash[:error] %>
-      <div class="alert alert-danger col-md-6 col-md-offset-3">
+      <div class="text-center alert alert-danger col-md-6 col-md-offset-3">
         <strong>There were errors creating you account</strong>
         <ul>
           <% flash[:error].each do |e| %>
@@ -31,7 +35,7 @@
     <% end %>
 
     <% if flash[:success] %>
-      <div class="alert alert-success col-md-6 col-md-offset-3">
+      <div class="text-center alert alert-success col-md-6 col-md-offset-3">
         <strong><%= flash[:success] %></strong>
       </div>
     <% end %>

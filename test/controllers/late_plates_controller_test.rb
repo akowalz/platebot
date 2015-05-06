@@ -97,27 +97,44 @@ class LatePlatesControllerTest < ActionController::TestCase
   end
 
   test "index lists today's late plates" do
-    n = [1,2,3,4].sample
-    n.times do
-      @cooper.late_plates.create( dt: DateTime.now )
-    end
+    @cooper.late_plates.create( dt: DateTime.now )
 
     get :index
     assert_response 200
-    assert_select ".late-plate", count: n
+    assert_select ".late-plate", count: 1
   end
 
   test "index does not list tomorrow's late plates" do
-    n = [1,2,3,4].sample
-    n.times do
-      @cooper.late_plates.create( dt: DateTime.now )
-    end
-
+    @cooper.late_plates.create( dt: DateTime.now )
     @cooper.late_plates.create( dt: DateTime.now.tomorrow )
     @cooper.late_plates.create( dt: DateTime.now.yesterday )
 
     get :index
     assert_response 200
-    assert_select ".late-plate", count: n
+    assert_select ".late-plate", count: 1
+  end
+
+  test "create adds a late plate for the current user" do
+    sign_in(@cooper)
+    assert_difference -> { @cooper.late_plates.for_today.count } do
+      post :create
+    end
+    assert flash[:success]
+  end
+
+  test "create does not add a late plate unless signed in" do
+    assert_no_difference -> { @cooper.late_plates.count } do
+      post :create
+    end
+    assert_redirected_to "/auth/google_oauth2"
+  end
+
+  test "destroy removes a late plate" do
+    sign_in(@cooper)
+    @cooper.late_plates.create
+    assert_difference -> { @cooper.late_plates.count }, -1 do
+      delete :destroy, id: @cooper.late_plates.last.id
+    end
+    assert flash[:success]
   end
 end

@@ -3,7 +3,7 @@ module LatePlatesHelper
   UNDO_COMMANDS = ["undo", "delete", "remove", "remove plate", "remove late plate"]
   HELP_COMMANDS = ["howto", "how to", "assist", "halp", "how"]
   ADD_COMMANDS =  ["add", "new", "late plate", "late", "plate"]
-  STATUS_COMMANDS = ["status", "check"]
+  STATUS_COMMANDS = ["status", "check", "update"]
 
   def create_message(from, body)
     unless cooper = Cooper.find_by({ number: from })
@@ -69,7 +69,13 @@ module LatePlatesHelper
       "Hope you like vegetarian!",
       "Yum yum yum !!!",
       "Keep on truckin'!",
-      "Co-op-tastic!"
+      "Treat yo self!",
+      "It's gon' be good'",
+      "Live long and prosper",
+      "May the force be with you",
+      "PlateBot OUT.",
+      "Yabba dabba dooo!",
+      "Happy trails!"
     ].sample
   end
 
