@@ -1,0 +1,43 @@
+<div class="row edit-form">
+  <div class="col-md-5 returning-cooper">
+    <h3>Already entered your number? Link your account here:</h3>
+    <%= form_tag( { method: "post", html: { class: "inline-form" } } ) do %>
+      <div class="form-group">
+        <%= label_tag(:number, "Enter your phone number:") %>
+        <%= telephone_field(:cooper, :number, placeholder: "333-444-5555") %>
+        <%= hidden_field_tag(:uid, @uid) %>
+        <%= submit_tag "Link", class: "btn btn-success" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-1">
+    <h2><em>OR</em></h2>
+  </div>
+
+  <div class="col-md-6 new-cooper">
+    <h3>First time here? Get yourself set up:</h3>
+    <div class="row">
+      <%= form_for :cooper, url: { action: "create" } do |f| %>
+        <div class="form-group">
+          <%= f.label :fname, "First name"%>
+          <%= f.text_field :fname, value: @fname, class: "form-control" %>
+
+          <%= f.label :lname, "Last name (or initial)" %>
+          <%= f.text_field :lname, value: @lname, class: "form-control" %>
+
+          <%= f.label :number, "10 digit phone number (including area code)" %>
+          <%= f.telephone_field :number, class: "form-control", placeholder: "333-444-5555" %>
+
+          <%= f.label :house, "Your house" %>
+          <%= f.radio_button :house, "Foster", selected: true %>
+          <%= f.label :house_child, "Foster" %>
+          <%= f.radio_button :house, "Elmwood" %>
+          <%= f.label :house_child, "Elmwood" %>
+
+          <%= f.submit "Create new account", class: "btn btn-success form-control" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,17 @@
 class Cooper < ActiveRecord::Base
   has_many :late_plates, dependent: :destroy
-  before_validation :sanitize_number
+  before_validation { self.number = Cooper.clean_number(self.number) }
 
   validates :fname, { presence: true }
   validates :lname, { presence: true }
   validates :number, { uniqueness: true }
   validates_format_of :number, { with: /\+1\d{10}/ }
   validates_format_of :house, { with: /(Foster)|(Elmwood)/ }
+
+  def Cooper.find_by_uncleaned_number(number)
+    number = Cooper.clean_number(number)
+    Cooper.find_by_number(number)
+  end
 
   def has_plate_for_day(day)
     late_plates.for_day(day).count > 0
@@ -24,8 +29,9 @@ class Cooper < ActiveRecord::Base
     "#{self.fname} #{self.lname[0]}."
   end
 
-  def sanitize_number
-    self.number.gsub!(/[^\d\+]/,'')
-    self.number = "+1" + self.number if self.number[0..1] != "+1"
+  def Cooper.clean_number(number)
+    number.gsub!(/[^\d\+]/,'')
+    number = "+1" + number if number[0..1] != "+1"
+    number
   end
 end

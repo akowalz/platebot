@@ -5,6 +5,10 @@ class CooperTest < ActiveSupport::TestCase
     @cooper = Cooper.new(fname: "Jim", lname: "Smith", number: "+11112223333", house: "Foster")
   end
 
+  def teardown
+    @cooper.destroy
+  end
+
   test "valid coopers are valid" do
     assert @cooper.valid?
   end
@@ -53,5 +57,10 @@ class CooperTest < ActiveSupport::TestCase
     copy = Cooper.new(fname: "a", lname: "b", number: @cooper.number, house: "Foster")
     assert_not copy.valid?
     assert_not copy.save
+  end
+
+  test "it can find coopers with unclean numbers" do
+    @cooper.save
+    assert_equal @cooper, Cooper.find_by_uncleaned_number("111-222-3333")
   end
 end

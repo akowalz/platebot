@@ -32,4 +32,22 @@ class LatePlatesController < ApplicationController
     @plates = LatePlate.for_today
     render json: [@plates.map { |p| p.cooper.initialized_name }]
   end
+
+  def create
+    if current_user
+      current_user.late_plates.create
+      flash[:success] = "Late plate added for today!"
+      redirect_to root_path
+    else
+      # they gotta sign in
+      redirect_to "/auth/google_oauth2"
+    end
+  end
+
+  def destroy
+    late_plate = LatePlate.find(params[:id])
+    late_plate.destroy
+    flash[:success] = "Your late plate has been removed"
+    redirect_to root_path
+  end
 end

@@ -2,17 +2,19 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
   root 'late_plates#index'
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
+  resources :late_plates, only: [:create, :destroy]
   post 'add' => "late_plates#add"
   get 'help' => "late_plates#help"
-  get 'signup' => "coopers#new"
 
-  resources :coopers, only: [:create, :show]
+  get 'quick_add' => "late_plates#create"
+
+  resources :coopers, only: [:new, :create]
+
+  get 'auth/google_oauth2/callback', to: "sessions#create"
+  resource :sessions, only: [:create, :destroy]
+  delete "signout" => "sessions#destroy"
 
 
   get 'api' => "late_plates#api"
