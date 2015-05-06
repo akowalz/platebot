@@ -14,6 +14,9 @@ Rails.application.routes.draw do
 
   resources :coopers, only: [:create, :show]
 
+
+  get 'api' => "late_plates#api"
+
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

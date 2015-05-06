@@ -27,4 +27,9 @@ class LatePlatesController < ApplicationController
     @help = HELP_COMMANDS
     @status = STATUS_COMMANDS
   end
+
+  def api
+    @plates = LatePlate.for_today
+    render json: [@plates.map { |p| p.cooper.initialized_name }]
+  end
 end
