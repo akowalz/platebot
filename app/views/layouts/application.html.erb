@@ -16,7 +16,7 @@
     <% if current_user %>
       <%= link_to "Sign out", signout_path, method: "delete", class: "navbar-right navbar-text" %>
     <% else %>
-      <%= link_to "Sign in with Gmail", "/auth/google_oauth2", class: "btn btn-success navbar-btn navbar-right" %>
+      <%# link_to "Sign in ", "/auth/google_oauth2", class: "btn btn-success navbar-btn navbar-right" %>
     <% end %>
   </div>
 </nav>
