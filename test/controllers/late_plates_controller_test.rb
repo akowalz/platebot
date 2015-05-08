@@ -6,7 +6,8 @@ class LatePlatesControllerTest < ActionController::TestCase
       fname: "Bob",
       lname: "Smith",
       house: "Foster",
-      number: "+11235556666"
+      number: "+11235556666",
+      uid: "123uid"
     })
   end
 

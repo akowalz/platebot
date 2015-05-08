@@ -1,0 +1,27 @@
+<div class="col-md-2" id="user-panel">
+  <h2>
+    <%= "#{cooper.name}" %>
+  </h2>
+  <%= link_to "Add a plate for today",
+    late_plates_path,
+    method: :post,
+    class: "btn btn-primary btn-lg
+    #{'disabled' if cooper.has_plate_for_today}"
+  %>
+
+  <h3>your weekly plates:</h3>
+  <% 7.times do |day| %>
+    <% if cooper.has_repeat_plate_for(day) %>
+      <%= link_to Date::DAYNAMES[day],
+                  cooper_repeat_plate_path(cooper, cooper.repeat_plates.for_day(day).last.id),
+                  method: :delete,
+                  class: "btn btn-block btn-warning" %>
+    <% else %>
+      <%= link_to Date::DAYNAMES[day],
+                  cooper_repeat_plates_path(cooper, day: day),
+                  method: :post,
+                  class: "btn btn-default btn-block" %>
+    <% end %>
+  <% end %>
+
+</div>

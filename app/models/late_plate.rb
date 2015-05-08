@@ -1,6 +1,8 @@
 class LatePlate < ActiveRecord::Base
   belongs_to :cooper
-  before_save :verify_late_plate
+  validates_presence_of :cooper_id, :dt
+  before_validation { self.dt ||= DateTime.now }
+  validate :verify_late_plate
 
   def simple_time_with_date
     self.created_at
@@ -35,7 +37,8 @@ class LatePlate < ActiveRecord::Base
   private
 
   def verify_late_plate
-    self.dt ||= DateTime.now
-    return false if cooper && cooper.has_plate_for_day(self.dt)
+    if cooper && cooper.has_plate_for_day(self.dt)
+      errors.add(:duplicate_plate, "Cannot have two late plates on one day")
+    end
   end
 end
