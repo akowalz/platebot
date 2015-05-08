@@ -24,6 +24,10 @@ class CoopersController < ApplicationController
     end
   end
 
+  def show
+    @cooper = Cooper.find(params[:id])
+  end
+
   private
     def cooper_params
       params.require(:cooper).permit(

@@ -18,6 +18,7 @@ class LatePlatesController < ApplicationController
 
   def index
     @plates = LatePlate.for_today
+    @repeats = RepeatPlate.for_today
     @today = simple_time(DateTime.now)
     @upcoming = LatePlate.upcoming
   end
@@ -29,14 +30,17 @@ class LatePlatesController < ApplicationController
   end
 
   def api
-    @plates = LatePlate.for_today
+    @plates = LatePlate.for_today + RepeatPlate.for_today
     render json: [@plates.map { |p| p.cooper.initialized_name }]
   end
 
   def create
     if current_user
-      current_user.late_plates.create
-      flash[:success] = "Late plate added for today!"
+      if current_user.late_plates.create
+        flash[:success] = "Late plate added for today!"
+      else
+        flash[:error] = "You already have a late plate for today"
+      end
       redirect_to root_path
     else
       # they gotta sign in

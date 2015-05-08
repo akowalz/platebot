@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'repeat/plates'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -10,7 +12,9 @@ Rails.application.routes.draw do
 
   get 'quick_add' => "late_plates#create"
 
-  resources :coopers, only: [:new, :create]
+  resources :coopers, only: [:show, :new, :create] do
+    resources :repeat_plates
+  end
 
   get 'auth/google_oauth2/callback', to: "sessions#create"
   resource :sessions, only: [:create, :destroy]

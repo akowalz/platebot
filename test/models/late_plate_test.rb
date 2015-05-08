@@ -1,6 +1,20 @@
 require 'test_helper'
 
 class LatePlateTest < ActiveSupport::TestCase
+  def setup
+    @cooper = Cooper.create( {
+      fname: "Bob",
+      lname: "Smith",
+      house: "Foster",
+      number: "+11235556666",
+      uid: "123uid"
+    })
+  end
+
+  def teardown
+    @cooper.destroy
+  end
+
   test "gets plate for particular house" do
     f = (0..10).to_a.sample
     e = f + 2
@@ -21,24 +35,20 @@ class LatePlateTest < ActiveSupport::TestCase
   end
 
   test "gets upcoming lateplates" do
-    today = [1,2,3,4,5].sample
-    today.times { LatePlate.create }
-
     upcoming = [2,3,4,5].sample
-    upcoming.times { LatePlate.create( dt: DateTime.now + [1,2,3].sample ) }
+    upcoming.times { |i| @cooper.late_plates.create( dt: DateTime.now + i+1 ) }
 
     assert_equal upcoming, LatePlate.upcoming.count
     assert LatePlate.upcoming.first.dt < LatePlate.upcoming.second.dt
   end
 
   test "the same cooper can't have 2 late plates for the same day" do
-    cooper = Cooper.create(fname: "f", lname: "f", house: "Foster", number: "+12223334464")
-    cooper.late_plates.create( dt: DateTime.now.beginning_of_day )
-    assert_no_difference -> { cooper.late_plates.count } do
-      cooper.late_plates.create
+    @cooper.late_plates.create( dt: DateTime.now.beginning_of_day )
+    assert_no_difference -> { @cooper.late_plates.count } do
+      @cooper.late_plates.create
     end
-    assert_difference -> {cooper.late_plates.count }, +1 do
-      cooper.late_plates.create( dt: DateTime.now + 2 )
+    assert_difference -> { @cooper.late_plates.count }, +1 do
+      @cooper.late_plates.create( dt: DateTime.now + 2 )
     end
   end
 end

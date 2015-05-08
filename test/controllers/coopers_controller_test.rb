@@ -1,14 +1,29 @@
 require 'test_helper'
 
 class CoopersControllerTest < ActionController::TestCase
+
+  def setup
+    @cooper = Cooper.create({
+        fname: "Foo",
+        lname: "Bar",
+        house: "Foster",
+        number: "+144455566666",
+        uid:    "123abc"
+    })
+  end
+
+  def teardown
+    @cooper.destroy
+  end
+
   test "create creates a cooper with valid information" do
     assert_difference -> { Cooper.count } do
       post :create, { cooper: {
         fname: "Foo",
         lname: "Bar",
         house: ["Foster","Elmwood"].sample,
-        number: "+144455566666",
-        uid:    "123abc" }
+        number: "+122255566666",
+        uid:    "123abc456" }
       }
       assert_redirected_to root_path
       assert_not_nil flash[:success]
@@ -53,5 +68,10 @@ class CoopersControllerTest < ActionController::TestCase
     assert_redirected_to root_path
     assert_not_nil flash[:success]
     assert cookies[:cooper_id]
+  end
+
+  test "it gets to show" do
+    get :show, { id: @cooper.id.to_s }
+    assert_response :success
   end
 end
