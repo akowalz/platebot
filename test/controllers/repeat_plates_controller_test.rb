@@ -11,7 +11,7 @@ class RepeatPlatesControllerTest < ActionController::TestCase
     })
   end
 
-  def tearday
+  def teardown
     @cooper.destroy
   end
 
