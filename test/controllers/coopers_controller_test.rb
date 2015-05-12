@@ -7,7 +7,7 @@ class CoopersControllerTest < ActionController::TestCase
         fname: "Foo",
         lname: "Bar",
         house: "Foster",
-        number: "+144455566666",
+        number: "+14445556666",
         uid:    "123abc"
     })
   end
@@ -22,7 +22,7 @@ class CoopersControllerTest < ActionController::TestCase
         fname: "Foo",
         lname: "Bar",
         house: ["Foster","Elmwood"].sample,
-        number: "+122255566666",
+        number: "+12225556666",
         uid:    "123abc456" }
       }
       assert_redirected_to root_path
@@ -70,8 +70,41 @@ class CoopersControllerTest < ActionController::TestCase
     assert cookies[:cooper_id]
   end
 
-  test "it gets to show" do
-    get :show, { id: @cooper.id.to_s }
+  test "users can view form to edit their information" do
+    get :edit, { id: @cooper.id.to_s }
     assert_response :success
+    assert_select "form"
+  end
+
+  test "submiting form with valid information updates cooper" do
+    new_number = "111-222-3333"
+    patch :update, { id: @cooper.id.to_s,
+                     cooper: {
+      fname: @cooper.fname,
+      lname: @cooper.lname,
+      number: new_number,
+      house: "Elmwood"
+    } }
+
+    assert_equal "+11112223333", @cooper.reload.number
+    assert_equal "Elmwood", @cooper.reload.house
+    assert_redirected_to "/"
+    assert_not_nil flash[:success]
+  end
+
+
+  test "submiting form with invalid information rerenders form" do
+    invalid_number = "111-22-3333"
+    patch :update, { id: @cooper.id.to_s,
+                     cooper: {
+      fname: @cooper.fname,
+      lname: @cooper.lname,
+      number: invalid_number,
+      house: "Elmwood"
+    } }
+
+    assert_not_equal invalid_number, @cooper.number
+    assert_template "edit"
+    assert_not_nil flash.now[:error]
   end
 end

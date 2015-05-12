@@ -7,7 +7,7 @@ class Cooper < ActiveRecord::Base
   validates :fname, { presence: true }
   validates :lname, { presence: true }
   validates :number, { uniqueness: true }
-  validates_format_of :number, { with: /\+1\d{10}/ }
+  validates_format_of :number, { with: /\A\+1\d{10}\z/ }
   validates_format_of :house, { with: /(Foster)|(Elmwood)/ }
 
   # all plates

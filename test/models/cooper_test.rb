@@ -36,7 +36,8 @@ class CooperTest < ActiveSupport::TestCase
       "111-222334",
       "(11) 222 3333",
       "222-3333",
-      "1112222"
+      "1112222",
+      "1284129847192847192847129847912874"
     ]
 
     numbers.each do |number|

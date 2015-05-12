@@ -1,6 +1,9 @@
 <div class="col-md-2" id="user-panel">
   <h2>
     <%= "#{cooper.name}" %>
+    <small class="right">
+      <%= link_to "(edit my info)", edit_cooper_path(current_user) %>
+    </small>
   </h2>
   <%= link_to "Add a plate for today",
     late_plates_path,
@@ -10,18 +13,19 @@
   %>
 
   <h4>your weekly plates:</h4>
-  <% 5.times do |day| %>
-    <% if cooper.has_repeat_plate_for(day) %>
-      <%= link_to Date::DAYNAMES[day],
-                  cooper_repeat_plate_path(cooper, cooper.repeat_plates.for_day(day).last.id),
-                  method: :delete,
-                  class: "btn btn-block btn-warning" %>
-    <% else %>
-      <%= link_to Date::DAYNAMES[day],
-                  cooper_repeat_plates_path(cooper, day: day),
-                  method: :post,
-                  class: "btn btn-default btn-block" %>
+  <div class="btn-group-vertical" role="group">
+    <% 5.times do |day| %>
+      <% if cooper.has_repeat_plate_for(day) %>
+        <%= link_to Date::DAYNAMES[day],
+                    cooper_repeat_plate_path(cooper, cooper.repeat_plates.for_day(day).last.id),
+                    method: :delete,
+                    class: "btn btn-lg btn-block btn-warning" %>
+      <% else %>
+        <%= link_to Date::DAYNAMES[day],
+                    cooper_repeat_plates_path(cooper, day: day),
+                    method: :post,
+                    class: "btn btn-lg btn-default btn-block" %>
+      <% end %>
     <% end %>
-  <% end %>
-
+  </div>
 </div>

@@ -24,8 +24,19 @@ class CoopersController < ApplicationController
     end
   end
 
-  def show
+  def edit
     @cooper = Cooper.find(params[:id])
+  end
+
+  def update
+    @cooper = Cooper.find(params[:id])
+    if @cooper.update_attributes(cooper_params)
+      flash[:success] = "Your info has been updated!"
+      redirect_to root_path
+    else
+      flash.now[:error] = @cooper.errors.full_messages
+      render 'edit'
+    end
   end
 
   private
