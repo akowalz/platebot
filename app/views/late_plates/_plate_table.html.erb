@@ -1,9 +1,9 @@
-<% if (plates+repeats).empty? %>
+<% if plates.empty? %>
   <strong>Huzzah! No late plates tonight!</strong>
 <% else %>
   <h4>
-    There <%= (plates+repeats).count == 1 ? "is" : "are" %>
-    <%= pluralize((plates+repeats).count, "late plate") %> tonight!
+    There <%= plates.count == 1 ? "is" : "are" %>
+    <%= pluralize(plates.count, "late plate") %> tonight!
   </h4>
   <table class="table table-striped table-hover">
     <thead>
@@ -15,12 +15,12 @@
       </tr>
     </thead>
     <tbody>
-      <% (repeats+plates).each_with_index do |p,i| %>
+      <% plates.each_with_index do |p,i| %>
         <tr class="late-plate <%= "warning" if p.is_a?(RepeatPlate) %>">
           <td><%= i + 1 %></td>
           <td><%= p.cooper.initialized_name %></td>
           <td><%= p.simple_time_with_date %></td>
-          <% if current_user && p.cooper.id == current_user.id %>
+          <% if current_user && p.cooper == current_user %>
             <% if p.is_a?(RepeatPlate) %>
             <td>
               <%= link_to "Remove", cooper_repeat_plate_path(current_user.id, p.id), method: :delete %>

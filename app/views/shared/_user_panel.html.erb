@@ -9,8 +9,8 @@
     #{'disabled' if cooper.has_plate_for_today}"
   %>
 
-  <h3>your weekly plates:</h3>
-  <% 7.times do |day| %>
+  <h4>your weekly plates:</h4>
+  <% 5.times do |day| %>
     <% if cooper.has_repeat_plate_for(day) %>
       <%= link_to Date::DAYNAMES[day],
                   cooper_repeat_plate_path(cooper, cooper.repeat_plates.for_day(day).last.id),

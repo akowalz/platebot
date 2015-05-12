@@ -17,8 +17,9 @@ class LatePlatesController < ApplicationController
   end
 
   def index
-    @plates = LatePlate.for_today
-    @repeats = RepeatPlate.for_today
+    @plates = LatePlate.for_today + RepeatPlate.for_today
+    @foster_plates = @plates.select { |p| p.cooper.house == "Foster" }
+    @elmwood_plates = @plates.select { |p| p.cooper.house == "Elmwood" }
     @today = simple_time(DateTime.now)
     @upcoming = LatePlate.upcoming
   end

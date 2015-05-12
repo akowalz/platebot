@@ -19,7 +19,7 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert_difference -> { LatePlate.count } do
       post :add, { From: @cooper.number, Body: "Today" }
     end
-    assert @cooper.late_plates.count > 0
+    assert_equal 1, @cooper.late_plates.count
   end
 
   test "does not add plate for strangers" do

@@ -13,10 +13,19 @@ OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
   }
 })
 
+DatabaseCleaner.strategy = :transaction
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  fixtures :all
   include SessionsHelper
+  setup :setup_db_clean
+  teardown :clean_db
 
-  # Add more helper methods to be used by all tests here...
+  def setup_db_clean
+    DatabaseCleaner.start
+  end
+
+  def clean_db
+    DatabaseCleaner.clean
+  end
 end

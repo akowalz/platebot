@@ -11,14 +11,12 @@
     <div class="row">
       <div class="col-md-6">
         <h2>Foster (the Zooo)</h2>
-        <%= render "plate_table", { plates: @plates.for_foster,
-                                    repeats: @repeats.for_foster } %>
+        <%= render "plate_table", { plates: @foster_plates } %>
       </div>
 
       <div class="col-md-6">
         <h2>Elmwood</h2>
-        <%= render "plate_table", { plates: @plates.for_elmwood,
-                                    repeats: @repeats.for_elmwood } %>
+        <%= render "plate_table", { plates: @elmwood_plates } %>
       </div>
     </div>
 
