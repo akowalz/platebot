@@ -6,7 +6,7 @@ class RepeatPlatesControllerTest < ActionController::TestCase
         fname: "Foo",
         lname: "Bar",
         house: "Foster",
-        number: "+144455566666",
+        number: "+14445556666",
         uid:    "123abc"
     })
   end
