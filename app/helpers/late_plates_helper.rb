@@ -13,7 +13,7 @@ module LatePlatesHelper
 
     if is_fetch_command(body)
       all_plates = all_plates_for_today.map { |p| p.cooper.fname }
-      return "There #{all_plates.length == 1 ? 'is' : 'are'} #{all_plates.count} #{'plates'.pluralize(all_plates.length)} today: #{all_plates.join(', ')}"
+      return "There #{all_plates.length == 1 ? 'is' : 'are'} #{all_plates.count} #{'plates'.pluralize(all_plates.length)} today: #{all_plates.join(',')}"
 
     elsif is_help_command(body)
       return "Try something like...:\n" +
