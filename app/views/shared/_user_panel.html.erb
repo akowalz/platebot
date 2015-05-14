@@ -12,7 +12,7 @@
     #{'disabled' if cooper.has_plate_for_today}"
   %>
 
-  <h4>your weekly plates:</h4>
+  <h4>your weekly repeat plates:</h4>
   <div class="btn-group-vertical" role="group">
     <% 5.times do |day| %>
       <% if cooper.has_repeat_plate_for(day) %>
