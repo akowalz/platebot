@@ -43,17 +43,4 @@ class RepeatPlatesControllerTest < ActionController::TestCase
     end
     assert_not @cooper.has_repeat_plate_for(day)
   end
-
-  test "it swaps a single plate for a repeat plate" do
-    skip
-    # this is a tricky case
-    @cooper.late_plates.create
-    assert @cooper.has_plate_for_today
-
-    post :create, { cooper_id: @cooper.id.to_s,
-                    day: DateTime.now.wday }
-    assert @cooper.has_plate_for_today
-    assert_not @cooper.has_single_plate_for_today
-    assert @cooper.has_repeat_plate_for_today
-  end
 end
