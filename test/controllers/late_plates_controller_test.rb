@@ -90,6 +90,14 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert_select "Message", /don't/
   end
 
+  test "fetch returns the plates tonight" do
+    @cooper.late_plates.create( dt: DateTime.now)
+    @cooper.late_plates.create( dt: DateTime.now.tomorrow)
+    post :add, { From: @cooper.number, Body: "get all" }
+    assert_select "Message", /1/
+    assert_select "Message", /#{@cooper.name}/
+  end
+
   test "help returns some help options" do
     assert_no_difference -> { @cooper.late_plates.count } do
       post :add, { From: @cooper.number, Body: "howto  " }

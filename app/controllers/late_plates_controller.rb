@@ -55,10 +55,4 @@ class LatePlatesController < ApplicationController
     flash[:success] = "Your late plate has been removed"
     redirect_to root_path
   end
-
-  private
-
-  def all_plates_for_today
-    (LatePlate.for_today + RepeatPlate.for_today).uniq { |p| p.cooper_id }
-  end
 end
