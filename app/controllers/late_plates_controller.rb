@@ -17,7 +17,7 @@ class LatePlatesController < ApplicationController
   end
 
   def index
-    @plates = LatePlate.for_today + RepeatPlate.for_today
+    @plates = all_plates_for_today
     @foster_plates = @plates.select { |p| p.cooper.house == "Foster" }
     @elmwood_plates = @plates.select { |p| p.cooper.house == "Elmwood" }
     @today = simple_time(DateTime.now)
@@ -31,7 +31,7 @@ class LatePlatesController < ApplicationController
   end
 
   def api
-    @plates = LatePlate.for_today + RepeatPlate.for_today
+    @plates = all_plates_for_today
     render json: [@plates.map { |p| p.cooper.initialized_name }]
   end
 
@@ -54,5 +54,11 @@ class LatePlatesController < ApplicationController
     late_plate.destroy
     flash[:success] = "Your late plate has been removed"
     redirect_to root_path
+  end
+
+  private
+
+  def all_plates_for_today
+    (LatePlate.for_today + RepeatPlate.for_today).uniq { |p| p.cooper_id }
   end
 end
