@@ -4,13 +4,18 @@ module LatePlatesHelper
   HELP_COMMANDS = ["howto", "how to", "assist", "halp", "how"]
   ADD_COMMANDS =  ["add", "new", "late plate", "late", "plate"]
   STATUS_COMMANDS = ["status", "check", "update"]
+  FETCH_COMMANDS = ["fetch", "get all", "get plates", "get for tonight"]
 
   def create_message(from, body)
     unless cooper = Cooper.find_by({ number: from })
       return "Sorry, I don't recognize this number. Add it at plate-bot.com"
     end
 
-    if is_help_command(body)
+    if is_fetch_command(body)
+      all_plates = all_plates_for_today.map { |p| p.cooper.fname }
+      return "There #{all_plates.length == 1 ? 'is' : 'are'} #{all_plates.count} #{'plates'.pluralize(all_plates.length)} today: #{all_plates.join(', ')}"
+
+    elsif is_help_command(body)
       return "Try something like...:\n" +
               "'Today' - add a late plate for today\n" +
               "'friday' - add a late for Friday\n" +
@@ -97,5 +102,13 @@ module LatePlatesHelper
 
   def is_help_command(text)
     check_command(text, HELP_COMMANDS)
+  end
+
+  def is_fetch_command(text)
+    check_command(text, FETCH_COMMANDS)
+  end
+
+  def all_plates_for_today
+    (LatePlate.for_today + RepeatPlate.for_today).uniq { |p| p.cooper_id }
   end
 end
