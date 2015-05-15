@@ -4,7 +4,7 @@ module LatePlatesHelper
   HELP_COMMANDS = ["howto", "how to", "assist", "halp", "how"]
   ADD_COMMANDS =  ["add", "new", "late plate", "late", "plate"]
   STATUS_COMMANDS = ["status", "check", "update"]
-  FETCH_COMMANDS = ["fetch", "get all", "get plates", "get for tonight"]
+  FETCH_COMMANDS = ["fetch", "fetch all", "get all", "get plates", "get for tonight"]
 
   def create_message(from, body)
     unless cooper = Cooper.find_by({ number: from })
