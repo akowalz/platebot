@@ -12,6 +12,18 @@
     #{'disabled' if cooper.has_plate_for_today}"
   %>
 
+  <hr>
+
+  <%= form_tag({ controller: "late_plates", action: "create", method: "post" }) do %>
+    <div class="form-group">
+      <%= label_tag(:dt, "or choose date:") %>
+      <%= text_field_tag(:dt, DateTime.now.strftime("%m/%d/%Y"), id: "user-panel-datepicker", class: "form-control") %>
+    </div>
+    <%= submit_tag("Add", class: "btn btn-primary") %>
+  <% end %>
+
+  <hr>
+
   <h4>your weekly repeat plates:</h4>
   <div class="btn-group-vertical" role="group">
     <% 5.times do |day| %>
