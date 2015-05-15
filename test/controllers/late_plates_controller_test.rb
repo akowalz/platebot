@@ -131,12 +131,31 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert flash[:success]
   end
 
+  test "create does not add late plate twice" do
+    sign_in(@cooper)
+    post :create
+    assert_no_difference -> { @cooper.late_plates.count } do
+      post :create
+    end
+    assert flash[:warning]
+  end
+
   test "create does not add a late plate unless signed in" do
     assert_no_difference -> { @cooper.late_plates.count } do
       post :create
     end
     assert_redirected_to "/auth/google_oauth2"
   end
+
+  test "create adds a late plate by day" do
+    sign_in(@cooper)
+    n = (1..100).to_a.sample
+    assert_difference -> { @cooper.late_plates.count } do
+      post :create, dt: (DateTime.now + n.days).strftime("%-m/%-d/%Y")
+    end
+    assert @cooper.has_plate_for_day(DateTime.now + n.days)
+  end
+
 
   test "destroy removes a late plate" do
     sign_in(@cooper)

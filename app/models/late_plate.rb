@@ -34,6 +34,11 @@ class LatePlate < ActiveRecord::Base
     joins(:cooper).where("coopers.house LIKE ?", "Elmwood")
   end
 
+  def self.add_by_datestring(str, format)
+    dt = DateTime.strptime(str, format).change(offset: "-05:00")
+    new(dt: dt)
+  end
+
   private
 
   def verify_late_plate
