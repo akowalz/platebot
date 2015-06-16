@@ -37,18 +37,10 @@ class LatePlatesController < ApplicationController
 
   def create
     if current_user
-
-      if params[:dt]
-        @late_plate = current_user.late_plates.add_by_datestring(params[:dt], "%m/%d/%Y")
+      if current_user.late_plates.create
+        flash[:success] = "Late plate added for today!"
       else
-        @late_plate = current_user.late_plates.new
-      end
-
-      if @late_plate.valid?
-        @late_plate.save
-        flash[:success] = "Late plate added!"
-      else
-        flash[:warning] = "You already have a late plate for that day!"
+        flash[:error] = "You already have a late plate for today"
       end
       redirect_to root_path
     else
