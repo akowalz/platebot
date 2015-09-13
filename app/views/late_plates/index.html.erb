@@ -23,6 +23,12 @@
     <%= render "upcoming_plates", { upcoming: @upcoming } %>
 
     <hr>
+
+    <div class="row">
+      <div class="col-md-6">
+        <%= render("quick_reference") %>
+      </div>
+    </div>
   </div>
 
     <%= render("shared/user_panel", { cooper: current_user }) if current_user %>
