@@ -8,22 +8,26 @@ class RepeatPlate < ActiveRecord::Base
     where( day: day )
   end
 
-  def simple_time_with_date
-    self.created_at
-      .in_time_zone("Central Time (US & Canada)")
-      .strftime("%l:%M %P on %A, %B %e")
-  end
-
   def self.for_today
     self.for_day(DateTime.now)
   end
 
+  def self.for_house(house)
+    joins(:cooper).where("coopers.house_id = ?", house.id)
+  end
+
   def self.for_foster
-    joins(:cooper).where("coopers.house LIKE ?", "Foster")
+    self.for_house(House.find_by(name: "Foster"))
   end
 
   def self.for_elmwood
-    joins(:cooper).where("coopers.house LIKE ?", "Elmwood")
+    self.for_house(House.find_by(name: "Elmwood"))
+  end
+
+  def simple_time_with_date
+    self.created_at
+      .in_time_zone("Central Time (US & Canada)")
+      .strftime("%l:%M %P on %A, %B %e")
   end
 
   def check_for_duplicate

@@ -26,12 +26,16 @@ class LatePlate < ActiveRecord::Base
     where(" dt >= ?", DateTime.now.end_of_day).order(:dt)
   end
 
+  def self.for_house(house)
+    joins(:cooper).where("coopers.house_id = ?", house.id)
+  end
+
   def self.for_foster
-    joins(:cooper).where("coopers.house LIKE ?", "Foster")
+    self.for_house(House.foster)
   end
 
   def self.for_elmwood
-    joins(:cooper).where("coopers.house LIKE ?", "Elmwood")
+    self.for_house(House.elmwood)
   end
 
   private
