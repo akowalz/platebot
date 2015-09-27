@@ -5,9 +5,17 @@ class LatePlatesControllerTest < ActionController::TestCase
     @cooper = Cooper.create( {
       fname: "Bob",
       lname: "Smith",
-      house: "Foster",
+      house: House.first,
       number: "+11235556666",
-      uid: "123uid"
+      uid: "123uid",
+    })
+
+    @elmwooder = Cooper.create( {
+      fname: "Rob",
+      lname: "Dole",
+      house: House.second,
+      number: "+11234446666",
+      uid: "123uid13412",
     })
   end
 
@@ -91,11 +99,19 @@ class LatePlatesControllerTest < ActionController::TestCase
   end
 
   test "fetch returns the plates tonight" do
-    @cooper.late_plates.create( dt: DateTime.now)
-    @cooper.late_plates.create( dt: DateTime.now.tomorrow)
+    @cooper.late_plates.create
+    @cooper.late_plates.create( dt: 1.day.from_now )
     post :add, { From: @cooper.number, Body: "get all" }
     assert_select "Message", /1/
     assert_select "Message", /#{@cooper.name}/
+  end
+
+  test "fetch returns the plates tonight for the right house" do
+    @cooper.late_plates.create
+    @elmwooder.late_plates.create
+    post :add, { From: @elmwooder.number, Body: "get all" }
+    assert_select "Message", /1/
+    assert_select "Message", /#{@elmwooder.name}/
   end
 
   test "help returns some help options" do
@@ -105,18 +121,37 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert_select "Message", /status/
   end
 
-  test "index lists today's late plates" do
+  test "index lists today's late plates for both houses without a current user" do
     @cooper.late_plates.create( dt: DateTime.now )
+    @elmwooder.late_plates.create( dt: DateTime.now )
 
     get :index
     assert_response 200
-    assert_select ".late-plate", count: 1
+    assert_select ".late-plate", count: 2
   end
 
   test "index does not list tomorrow's late plates" do
     @cooper.late_plates.create( dt: DateTime.now )
     @cooper.late_plates.create( dt: DateTime.now.tomorrow )
     @cooper.late_plates.create( dt: DateTime.now.yesterday )
+
+    get :index
+    assert_response 200
+    assert_select ".late-plate", count: 1
+  end
+
+  test "if user is signed in, it shows the plates from their house" do
+    sign_in @elmwooder
+    @elmwooder.late_plates.create
+    @cooper.late_plates.create
+
+    get :index
+    assert_response 200
+    assert_select ".late-plate", count: 1
+  end
+
+  test "index lists current single plates and repeat plates for a day" do
+    @cooper.repeat_plates.create( day: DateTime.now.wday )
 
     get :index
     assert_response 200

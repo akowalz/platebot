@@ -6,7 +6,7 @@ class CoopersControllerTest < ActionController::TestCase
     @cooper = Cooper.create({
         fname: "Foo",
         lname: "Bar",
-        house: "Foster",
+        house_id: 0,
         number: "+14445556666",
         uid:    "123abc"
     })
@@ -21,7 +21,7 @@ class CoopersControllerTest < ActionController::TestCase
       post :create, { cooper: {
         fname: "Foo",
         lname: "Bar",
-        house: ["Foster","Elmwood"].sample,
+        house_id: 0,
         number: "+12225556666",
         uid:    "123abc456" }
       }
@@ -36,7 +36,7 @@ class CoopersControllerTest < ActionController::TestCase
       post :create, { cooper: {
         fname: "Foo",
         lname: "Bar",
-        house: ["Foster","Elmwood"].sample,
+        house_id: 0,
         number: "+14446666",
         uid: "123abc" }
       }
@@ -50,7 +50,7 @@ class CoopersControllerTest < ActionController::TestCase
     @cooper = Cooper.create({
       fname: "Foo",
       lname: "Bar",
-      house: ["Foster","Elmwood"].sample,
+      house_id: 0,
       number: "+12223334545"
     })
 
@@ -58,7 +58,7 @@ class CoopersControllerTest < ActionController::TestCase
       post :create, { cooper: {
         fname: "Foo",
         lname: "Bar",
-        house: ["Foster","Elmwood"].sample,
+        house_id: 0,
         number: "222-333-4545",
         uid: "123abc" }
       }
@@ -78,16 +78,19 @@ class CoopersControllerTest < ActionController::TestCase
 
   test "submiting form with valid information updates cooper" do
     new_number = "111-222-3333"
+    new_first = "Bill"
+    new_last = "Ready"
     patch :update, { id: @cooper.id.to_s,
                      cooper: {
-      fname: @cooper.fname,
-      lname: @cooper.lname,
+      fname: new_first,
+      lname: new_last,
       number: new_number,
-      house: "Elmwood"
+      house_id: 0,
     } }
 
     assert_equal "+11112223333", @cooper.reload.number
-    assert_equal "Elmwood", @cooper.reload.house
+    assert_equal new_first, @cooper.fname
+    assert_equal new_last, @cooper.lname
     assert_redirected_to "/"
     assert_not_nil flash[:success]
   end
@@ -100,7 +103,7 @@ class CoopersControllerTest < ActionController::TestCase
       fname: @cooper.fname,
       lname: @cooper.lname,
       number: invalid_number,
-      house: "Elmwood"
+      house_id: 0,
     } }
 
     assert_not_equal invalid_number, @cooper.number
