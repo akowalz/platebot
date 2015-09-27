@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
     if @cooper = Cooper.find_by_uid(@auth[:uid])
       sign_in(@cooper)
       flash[:success] = "Signed in successfully"
+
       redirect_to root_path
     else
       # they need to provide more info to sign up
