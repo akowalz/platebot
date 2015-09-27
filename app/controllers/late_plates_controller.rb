@@ -17,14 +17,11 @@ class LatePlatesController < ApplicationController
   end
 
   def index
-    @foster_plates  = House.foster.all_plates_for_today
-    @elmwood_plates = House.elmwood.all_plates_for_today
-
+    @plates = all_plates_for_today
+    @foster_plates = @plates.select { |p| p.cooper.house == "Foster" }
+    @elmwood_plates = @plates.select { |p| p.cooper.house == "Elmwood" }
     @today = simple_time(DateTime.now)
-
-    if current_user
-      @upcoming = current_user.house.upcoming_plates
-    end
+    @upcoming = LatePlate.upcoming
   end
 
   def help

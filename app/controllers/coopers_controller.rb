@@ -51,7 +51,7 @@ class CoopersController < ApplicationController
       params.require(:cooper).permit(
         :fname,
         :lname,
-        :house_id,
+        :house,
         :number,
         :uid
       )

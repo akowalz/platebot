@@ -1,5 +1,4 @@
 module LatePlatesHelper
-  include ActionView::Helpers::TextHelper
 
   UNDO_COMMANDS = ["undo", "delete", "remove", "remove plate", "remove late plate"]
   HELP_COMMANDS = ["howto", "how to", "assist", "halp", "how"]
@@ -13,8 +12,8 @@ module LatePlatesHelper
     end
 
     if is_fetch_command(body)
-      all_plates = cooper.house.all_plates_for_today.map { |p| p.cooper.fname }
-      return "There #{all_plates.length == 1 ? 'is' : 'are'} #{pluralize(all_plates.count, "plates")} at #{cooper.house.name} today: #{all_plates.join(',')}"
+      all_plates = all_plates_for_today.map { |p| p.cooper.fname }
+      return "There #{all_plates.length == 1 ? 'is' : 'are'} #{all_plates.count} #{'plates'.pluralize(all_plates.length)} today: #{all_plates.join(',')}"
 
     elsif is_help_command(body)
       return "Try something like...:\n" +

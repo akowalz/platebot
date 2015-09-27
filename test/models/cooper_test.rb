@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CooperTest < ActiveSupport::TestCase
   def setup
-    @cooper = Cooper.new(fname: "Jim", lname: "Smith", number: "+11112223333", house_id: 1)
+    @cooper = Cooper.new(fname: "Jim", lname: "Smith", number: "+11112223333", house: "Foster")
   end
 
   def teardown
@@ -46,9 +46,16 @@ class CooperTest < ActiveSupport::TestCase
     end
   end
 
+  test "only allows one of the two houses" do
+    @cooper.house = "not a house"
+    assert_not @cooper.valid?
+    @cooper.house = ["Elmwood","Foster"].sample
+    assert @cooper.valid?
+  end
+
   test "does not allow two users to have the same phone number" do
     @cooper.save
-    copy = Cooper.new(fname: "a", lname: "b", number: @cooper.number, house_id: 1)
+    copy = Cooper.new(fname: "a", lname: "b", number: @cooper.number, house: "Foster")
     assert_not copy.valid?
     assert_not copy.save
   end
