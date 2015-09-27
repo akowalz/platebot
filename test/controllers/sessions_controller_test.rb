@@ -8,7 +8,7 @@ class SessionsControllerTest < ActionController::TestCase
       lname: "Bar",
       uid: OmniAuth.config.mock_auth[:google_oauth2][:uid],
       number: "+19998887777",
-      house: House.first,
+      house: "Foster"
     }
   end
 

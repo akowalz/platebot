@@ -9,22 +9,18 @@
     <hr>
 
     <div class="row">
-      <% if !current_user || current_user.lives_in_foster? %>
-        <div class="col-md-6">
-          <h2>Foster (the Zooo)</h2>
-          <%= render "plate_table", { plates: @foster_plates } %>
-        </div>
-      <% end %>
+      <div class="col-md-6">
+        <h2>Foster (the Zooo)</h2>
+        <%= render "plate_table", { plates: @foster_plates } %>
+      </div>
 
-      <% if !current_user || current_user.lives_in_elmwood? %>
-        <div class="col-md-6">
-          <h2>Elmwood</h2>
-          <%= render "plate_table", { plates: @elmwood_plates } %>
-        </div>
-      <% end %>
+      <div class="col-md-6">
+        <h2>Elmwood</h2>
+        <%= render "plate_table", { plates: @elmwood_plates } %>
+      </div>
     </div>
 
-    <%= render "upcoming_plates", { upcoming: @upcoming } if current_user %>
+    <%= render "upcoming_plates", { upcoming: @upcoming } %>
 
     <hr>
 

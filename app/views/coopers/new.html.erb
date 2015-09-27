@@ -14,7 +14,10 @@
         %>
 
         <%= f.label :house, "Your house" %>
-        <%= collection_select(:cooper, :house_id, House.all, :id, :name ) %>
+        <%= f.radio_button :house, "Foster", checked: true %>
+        <%= f.label :house_child, "Foster" %>
+        <%= f.radio_button :house, "Elmwood" %>
+        <%= f.label :house_child, "Elmwood" %>
 
         <%= f.submit "Submit", class: "btn btn-success form-control" %>
       </div>
