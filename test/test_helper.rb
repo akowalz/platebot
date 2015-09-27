@@ -17,6 +17,8 @@ DatabaseCleaner.strategy = :transaction
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+  fixtures :all
+
   include SessionsHelper
   setup :setup_db_clean
   teardown :clean_db

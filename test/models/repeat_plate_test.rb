@@ -5,7 +5,7 @@ class RepeatPlateTest < ActiveSupport::TestCase
     @cooper = Cooper.create({
         fname: "Foo",
         lname: "Bar",
-        house: "Foster",
+        house_id: House.first.id,
         number: "+14445556666",
         uid:    "123abc"
     })
