@@ -52,7 +52,9 @@ class LatePlatesController < ApplicationController
   def destroy
     late_plate = LatePlate.find(params[:id])
     late_plate.destroy
+
     flash[:success] = "Your late plate has been removed"
+
     redirect_to root_path
   end
 end
