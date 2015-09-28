@@ -3,25 +3,14 @@ class RepeatPlate < ActiveRecord::Base
   validates_presence_of :day, :cooper_id
   validate :check_for_duplicate
 
+  scope :for_today, -> { for_day(DateTime.now) }
+  scope :for_house, -> house { joins(:cooper).where("coopers.house_id = ?", house.id) }
+  scope :for_foster, -> { for_house(House.foster) }
+  scope :for_elmwood, -> { for_house(House.elmwood) }
+
   def self.for_day(day)
     day = day.wday if day.is_a? DateTime
     where( day: day )
-  end
-
-  def self.for_today
-    self.for_day(DateTime.now)
-  end
-
-  def self.for_house(house)
-    joins(:cooper).where("coopers.house_id = ?", house.id)
-  end
-
-  def self.for_foster
-    self.for_house(House.find_by(name: "Foster"))
-  end
-
-  def self.for_elmwood
-    self.for_house(House.find_by(name: "Elmwood"))
   end
 
   def simple_time_with_date
