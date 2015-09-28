@@ -1,7 +1,7 @@
 class Cooper < ActiveRecord::Base
   has_many :late_plates,   dependent: :destroy
   has_many :repeat_plates, dependent: :destroy
-  # belongs_to :house
+  belongs_to :house
 
   before_validation { self.number = Cooper.clean_number(self.number) }
 
