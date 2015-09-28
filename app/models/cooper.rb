@@ -1,6 +1,7 @@
 class Cooper < ActiveRecord::Base
   has_many :late_plates,   dependent: :destroy
   has_many :repeat_plates, dependent: :destroy
+  # belongs_to :house
 
   before_validation { self.number = Cooper.clean_number(self.number) }
 
@@ -8,7 +9,6 @@ class Cooper < ActiveRecord::Base
   validates :lname, { presence: true }
   validates :number, { uniqueness: true }
   validates_format_of :number, { with: /\A\+1\d{10}\z/ }
-  validates_format_of :house, { with: /(Foster)|(Elmwood)/ }
 
   # all plates
   def has_plate_for_day(day)
@@ -44,6 +44,14 @@ class Cooper < ActiveRecord::Base
 
   def initialized_name
     "#{self.fname} #{self.lname[0]}."
+  end
+
+  def lives_in_foster?
+    house.name == "Foster"
+  end
+
+  def lives_in_elmwood?
+    house.name == "Elmwood"
   end
 
   def Cooper.clean_number(number)

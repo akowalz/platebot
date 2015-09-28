@@ -2,12 +2,20 @@ require 'test_helper'
 
 class LatePlateTest < ActiveSupport::TestCase
   def setup
-    @cooper = Cooper.create( {
+    @cooper = Cooper.create({
       fname: "Bob",
       lname: "Smith",
-      house: "Foster",
+      house_id: House.first.id,
       number: "+11235556666",
-      uid: "123uid"
+      uid: "123uid",
+    })
+
+    @elmwooder = Cooper.create({
+      fname: "Jim",
+      lname: "Dale",
+      house_id: House.second.id,
+      number: "+11235236666",
+      uid: "123uida",
     })
   end
 
@@ -15,23 +23,24 @@ class LatePlateTest < ActiveSupport::TestCase
     @cooper.destroy
   end
 
-  test "gets plate for particular house" do
-    f = (0..10).to_a.sample
-    e = f + 2
+  test "gets late plates for a particular house" do
+    assert LatePlate.for_house(@cooper.house).empty?
+    @cooper.late_plates.create!
+    assert_equal LatePlate.for_house(@cooper.house).count, 1
+    @elmwooder.late_plates.create!
+    assert_equal LatePlate.for_house(@elmwooder.house).count, 1
+    assert_equal LatePlate.for_house(@cooper.house).count, 1
+  end
 
-    fc = Cooper.create(fname: "f", lname: "f", house: "Foster", number: "+12223334464")
-    ec = Cooper.create(fname: "e", lname: "e", house: "Elmwood", number: "+12223334444")
+  test "gets late plates for a particular day" do
+    @cooper.late_plates.create( dt: DateTime.now + 100 )
+    assert_equal LatePlate.for_day( DateTime.now + 100 ).count, 1
+  end
 
-    f.times do |i|
-      fc.late_plates.create( dt: DateTime.now + i )
-    end
+  test "gets for a particular house on a particular day" do
+    @elmwooder.late_plates.create( dt: DateTime.now + 100)
+    assert_equal LatePlate.for_house(@elmwooder.house).for_day( DateTime.now + 100).count, 1
 
-    e.times do |i|
-      ec.late_plates.create( dt: DateTime.now + i )
-    end
-
-    assert_equal f, LatePlate.for_foster.count
-    assert_equal e, LatePlate.for_elmwood.count
   end
 
   test "gets upcoming lateplates" do

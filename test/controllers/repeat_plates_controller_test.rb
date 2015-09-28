@@ -5,9 +5,9 @@ class RepeatPlatesControllerTest < ActionController::TestCase
     @cooper = Cooper.create({
         fname: "Foo",
         lname: "Bar",
-        house: "Foster",
+        house: House.first,
         number: "+14445556666",
-        uid:    "123abc"
+        uid:    "123abc",
     })
   end
 

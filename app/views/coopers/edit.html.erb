@@ -14,11 +14,10 @@
         <%= f.label :number, "Phone number" %>
         <%= f.telephone_field :number, placehold: "333-444-5555", class: "form-control" %>
       </div>
+
       <%= f.label :house, "Your house" %>
-      <%= f.radio_button :house, "Foster", checked: true %>
-      <%= f.label :house_child, "Foster" %>
-      <%= f.radio_button :house, "Elmwood" %>
-      <%= f.label :house_child, "Elmwood" %>
+      <%= collection_select(:cooper, :house_id, House.all, :id, :name ) %>
+
       <%= f.submit "Update!", class: "btn btn-block btn-success" %>
     <% end %>
   </div>
