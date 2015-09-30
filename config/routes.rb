@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'repeat/plates'
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -15,6 +13,9 @@ Rails.application.routes.draw do
   resources :coopers, only: [:edit, :update, :new, :create] do
     resources :repeat_plates
   end
+
+  get 'feedback' => "feedback#new"
+  post 'feedback' => "feedback#create"
 
   get 'auth/google_oauth2/callback', to: "sessions#create"
   resource :sessions, only: [:create, :destroy]

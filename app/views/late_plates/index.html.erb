@@ -31,7 +31,17 @@
     <div class="row">
       <div class="col-md-6">
         <%= render("quick_reference") %>
+
+        <div class="row">
+          <% if current_user %>
+            <p>
+              Have an idea to make PlateBot better? Found a bug? Just want to say hey?
+              <%= link_to("Submit feedback here!", feedback_path) %>
+            </p>
+          <% end %>
+        </div>
       </div>
+
     </div>
   </div>
 
