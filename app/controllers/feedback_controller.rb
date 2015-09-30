@@ -9,7 +9,7 @@ class FeedbackController < ApplicationController
       to: "askowalczuk93@gmail.com",
       subject: "[PlateBot Feedback]",
       body: params[:feedback]
-    }).deliver_now
+    }).deliver_later
 
     flash[:success] = "Thanks for your feedback! Your input is appreciated."
     redirect_to root_path
