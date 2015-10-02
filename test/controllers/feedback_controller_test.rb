@@ -2,7 +2,7 @@ require 'test_helper'
 
 class FeedbackControllerTest < ActionController::TestCase
   test "should render textbox at new" do
-    sign_in Cooper.create(fname: "Bob", lname: "Dole", number: "+19144050918")
+    sign_in FactoryGirl.create(:cooper)
     get :new
     assert_response :success
     assert_select "textarea"

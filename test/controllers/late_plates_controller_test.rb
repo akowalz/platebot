@@ -2,21 +2,8 @@ require 'test_helper'
 
 class LatePlatesControllerTest < ActionController::TestCase
   def setup
-    @cooper = Cooper.create( {
-      fname: "Bob",
-      lname: "Smith",
-      house: House.first,
-      number: "+11235556666",
-      uid: "123uid",
-    })
-
-    @elmwooder = Cooper.create( {
-      fname: "Rob",
-      lname: "Dole",
-      house: House.second,
-      number: "+11234446666",
-      uid: "123uid13412",
-    })
+    @cooper = FactoryGirl.create(:cooper)
+    @elmwooder = FactoryGirl.create(:elmwooder)
   end
 
   def teardown

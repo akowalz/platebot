@@ -2,22 +2,10 @@ require 'test_helper'
 
 class HouseTest < ActiveSupport::TestCase
   def setup
-    @foster = House.first
-    @elmwood = House.second
-    @cooper = Cooper.create( {
-      fname: "Bob",
-      lname: "Smith",
-      number: "+11235556666",
-      house_id: House.first.id,
-      uid: "123uid"
-    })
-    @elmwooder = Cooper.create( {
-      fname: "Bob",
-      lname: "Smith",
-      number: "+11235556966",
-      house_id: House.second.id,
-      uid: "123uidadf"
-    })
+    @foster = House.foster
+    @elmwood = House.elmwood
+    @cooper = FactoryGirl.create(:cooper)
+    @elmwooder = FactoryGirl.create(:elmwooder)
   end
 
   test "gets daily late plates for a house" do

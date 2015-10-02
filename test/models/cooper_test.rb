@@ -2,11 +2,7 @@ require 'test_helper'
 
 class CooperTest < ActiveSupport::TestCase
   def setup
-    @cooper = Cooper.new(fname: "Jim", lname: "Smith", number: "+11112223333", house_id: 1)
-  end
-
-  def teardown
-    @cooper.destroy
+    @cooper = FactoryGirl.create(:cooper)
   end
 
   test "valid coopers are valid" do
@@ -47,14 +43,12 @@ class CooperTest < ActiveSupport::TestCase
   end
 
   test "does not allow two users to have the same phone number" do
-    @cooper.save
     copy = Cooper.new(fname: "a", lname: "b", number: @cooper.number, house_id: 1)
     assert_not copy.valid?
     assert_not copy.save
   end
 
   test "it can find coopers with unclean numbers" do
-    @cooper.save
-    assert_equal @cooper, Cooper.find_by_uncleaned_number("111-222-3333")
+    assert_equal @cooper, Cooper.find_by_uncleaned_number("914-406-8888")
   end
 end
