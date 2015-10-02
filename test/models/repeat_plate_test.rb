@@ -2,13 +2,7 @@ require 'test_helper'
 
 class RepeatPlateTest < ActiveSupport::TestCase
   def setup
-    @cooper = Cooper.create({
-        fname: "Foo",
-        lname: "Bar",
-        house_id: House.first.id,
-        number: "+14445556666",
-        uid:    "123abc"
-    })
+    @cooper = FactoryGirl.create(:cooper)
   end
 
   def teardown

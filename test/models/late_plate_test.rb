@@ -2,21 +2,8 @@ require 'test_helper'
 
 class LatePlateTest < ActiveSupport::TestCase
   def setup
-    @cooper = Cooper.create({
-      fname: "Bob",
-      lname: "Smith",
-      house_id: House.first.id,
-      number: "+11235556666",
-      uid: "123uid",
-    })
-
-    @elmwooder = Cooper.create({
-      fname: "Jim",
-      lname: "Dale",
-      house_id: House.second.id,
-      number: "+11235236666",
-      uid: "123uida",
-    })
+    @cooper = FactoryGirl.create(:cooper)
+    @elmwooder = FactoryGirl.create(:elmwooder)
   end
 
   def teardown

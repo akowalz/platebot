@@ -47,6 +47,7 @@ group :development, :test do
   gem 'spring', '~>1.3.5'
   gem 'dotenv-rails'
   gem 'database_cleaner'
+  gem 'factory_girl_rails'
 end
 
 gem 'bootstrap-sass'
