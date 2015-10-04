@@ -5,7 +5,7 @@ undo:
     - remove
     - remove plate
     - remove late plate
-  positive_response: "Got it %{name}, your late plate for %{date} has been removed! %{nice_phrase}"
+  positive_response: "Got it %{name}, your late plate for %{date} has been removed!"
   negative_response: "%{name}, you don't have any late plates to remove!"
 
 help:
@@ -16,11 +16,11 @@ help:
     - halp
     - how
   response: |
-    "Try something like:
+    Try something like:
     'Today' - add a late plate for today
     'friday' - add a late for Friday
     'status' - check if you have a plate tonight
-    'undo' - remove your most recent addition"
+    'undo' - remove your most recent addition
 
 add:
   triggers:
@@ -30,9 +30,7 @@ add:
     - late
     - plate
   negative_response: "%{name}, you already have a late plate for %{date}."
-  positive_response: >
-    "%{name}, your late plate has been added for %{date}!
-    You can undo this by texting 'undo'. %{nice_phrase}"
+  positive_response: "%{name}, your late plate has been added for %{date}! You can undo this by texting 'undo'. %{nice_phrase}"
 
 status:
   triggers:
