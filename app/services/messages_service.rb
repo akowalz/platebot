@@ -37,7 +37,7 @@ class MessagesService
       all_plates = cooper.house.all_plates_for_today
       @config[:fetch][:response] % {
         is_are: all_plates.length == 1 ? 'is' : 'are',
-        count: pluralize(all_plates.count, "plates"),
+        count: pluralize(all_plates.count, "plate"),
         house: cooper.house.name,
         names: all_plates.map { |plate| plate.cooper.fname }.join(",")
       }
