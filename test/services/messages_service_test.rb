@@ -83,7 +83,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
 
     assert_match(@cooper.name, response)
     assert_match(@cooper2.name, response)
-    assert_match(/are 2/, response)
+    assert_match(/are 2 plates/, response)
   end
 
   test "fetch returns the plates tonight for the right house" do
@@ -94,7 +94,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
     response = MessagesService.respond_to_message(@elmwooder.number, "fetch")
 
     assert_match(@elmwooder.name, response)
-    assert_match(/is 1/, response)
+    assert_match(/is 1 plate /, response)
   end
 
   test "it parses unknown messages" do
