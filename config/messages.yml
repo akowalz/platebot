@@ -16,7 +16,7 @@ help:
     - halp
     - how
   response: |
-    "Try something like...:
+    "Try something like:
     'Today' - add a late plate for today
     'friday' - add a late for Friday
     'status' - check if you have a plate tonight

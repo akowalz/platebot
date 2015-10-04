@@ -29,6 +29,7 @@ class LatePlatesController < ApplicationController
     @undo = MessagesService.messages_config[:undo][:triggers]
     @help = MessagesService.messages_config[:help][:triggers]
     @status = MessagesService.messages_config[:status][:triggers]
+    @fetch = MessagesService.messages_config[:fetch][:triggers]
   end
 
   def api

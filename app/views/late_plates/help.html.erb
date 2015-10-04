@@ -4,17 +4,17 @@
   <h3>About PlateBot</h3>
 
   <p>PlateBot lets you add late plates through text messages! It was created
-  specifically for MOSAIC Co-op in Evanston, IL.</p>
+  specifically for MOSAIC Co-op in Evanston, IL by <%= link_to("Alex K", "http://twitter.com/akowalz") %>.</p>
 
   <p>PlateBot utilizes <%= link_to "Twilio", "http://twilio.com" %> to process
-  and send text messages.  If you're a developer and are curious how it was made,
-  check it out on <%= link_to "Github", "http://github.com/akowalz/platebot" %></p>
+  and send text messages.  If you're a developer and are curious how PlateBot was made,
+  check it out on <%= link_to "Github", "http://github.com/akowalz/platebot" %>.</p>
 
   <h3>Getting Started</h3>
 
   <p>PlateBot will only add late plates for numbers it recognizes, so be sure
   to create an account so it recognizes you.  You can do that using the big green
-  button at the top of the page!  Phone numbers have to be 11 digits, including
+  button at the top of the page.  Phone numbers have to be 11 digits, including
   the leading 1 and an area code.  For example: 1-222-333-3334</p>
 
   <p>Once you have your account set up, you'll be able to text commands to the
@@ -23,7 +23,7 @@
 
   <div class="panel panel-warning">
     <div class="panel-heading">
-      <div class="panel-title">Important note!</div>
+      <div class="panel-title">Important note about texting PlateBot!</div>
     </div>
 
     <div class="panel-body">
@@ -69,7 +69,7 @@
   <p>to add a late plate for April 15th, text:</p>
   <div class="panel panel-success">
     <div class="panel-body">
-    April 25th
+    April 15th
     </div>
   </div>
 
@@ -119,16 +119,38 @@
     <% end %>
   </ul>
 
-  <h3>Ask for help</h3>
-
-  <p>If you forget how to use PlateBot on the go, you can
-  ask for help. Unfortunately, the command 'help' won't work because of some
-  legal complications...but you can use a 'howto'</p>
+  <h3>Get Tonight's Late Plates</h3>
+  <p>As a cook, you'll want to quickly get tonight's late plates
+  so you can see how many there are and prepare them.
+  You can do this with the 'fetch' command</p>
 
   Text:
   <div class="panel panel-success">
     <div class="panel-body">
-    howto
+    fetch
+    </div>
+  </div>
+
+
+  <p>Fetch will tell you all the late plates for your house for the night! Very handy.</p>
+
+  <p>The following are valid fetch commands:</p>
+  <ul>
+    <% @fetch.each do |u| %>
+      <li><%= u %></li>
+    <% end %>
+  </ul>
+
+  <h3>Ask for help</h3>
+
+  <p>If you forget how to use PlateBot on the go, you can
+  ask for help. Unfortunately, the command 'help' won't work because of some
+  legal complications...but you can use 'halp'</p>
+
+  Text:
+  <div class="panel panel-success">
+    <div class="panel-body">
+    halp
     </div>
   </div>
 
@@ -140,6 +162,6 @@
   </ul>
 
 
-  <p>...and that's it! If something goes wrong, talk to Alex K.</p>
+  <p>...and that's it! If something goes wrong, or you have a suggestion to make PlateBot better, please lemme know with the <%= link_to("feedback form", feedback_path) %>.</p>
   </div>
 </div>
