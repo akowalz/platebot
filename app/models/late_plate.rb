@@ -18,7 +18,7 @@ class LatePlate < ActiveRecord::Base
   end
 
   def simple_time_for_day
-    self.dt.strftime("%A, %B %e")
+    self.dt.readable
   end
 
   private
