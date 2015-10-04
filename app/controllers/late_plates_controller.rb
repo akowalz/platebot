@@ -3,13 +3,11 @@ require 'chronic'
 require 'late_plates_helper'
 
 class LatePlatesController < ApplicationController
-  include LatePlatesHelper
-
-  def add
+  def twilio_endpoint
     from_number = params[:From]
     message_body = params[:Body]
 
-    message = create_message(from_number, message_body)
+    message = MessagesService.respond_to_message(from_number, message_body)
 
     twiml = Twilio::TwiML::Response.new { |r| r.Message(message) }
 
@@ -20,7 +18,7 @@ class LatePlatesController < ApplicationController
     @foster_plates  = House.foster.all_plates_for_today
     @elmwood_plates = House.elmwood.all_plates_for_today
 
-    @today = simple_time(DateTime.now)
+    @today = DateTime.now.readable
 
     if current_user
       @upcoming = current_user.house.upcoming_plates
@@ -28,9 +26,9 @@ class LatePlatesController < ApplicationController
   end
 
   def help
-    @undo = UNDO_COMMANDS
-    @help = HELP_COMMANDS
-    @status = STATUS_COMMANDS
+    @undo = MessagesService.messages_config[:undo][:triggers]
+    @help = MessagesService.messages_config[:help][:triggers]
+    @status = MessagesService.messages_config[:status][:triggers]
   end
 
   def api

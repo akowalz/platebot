@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root 'late_plates#index'
 
   resources :late_plates, only: [:create, :destroy]
-  post 'add' => "late_plates#add"
+  post 'add' => "late_plates#twilio_endpoint"
   get 'help' => "late_plates#help"
 
   get 'quick_add' => "late_plates#create"
