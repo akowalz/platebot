@@ -12,20 +12,20 @@ class LatePlatesControllerTest < ActionController::TestCase
 
   test "adds late plates for coopers" do
     assert_difference -> { LatePlate.count } do
-      post :add, { From: @cooper.number, Body: "Today" }
+      post :twilio_endpoint, { From: @cooper.number, Body: "Today" }
     end
     assert_equal 1, @cooper.late_plates.count
   end
 
   test "does not add plate for strangers" do
     assert_no_difference -> { LatePlate.count } do
-      post :add, { From: "+5235556666", Body: "Today" }
+      post :twilio_endpoint, { From: "+5235556666", Body: "Today" }
     end
     assert @cooper.late_plates.count == 0
   end
 
   test "adds late plates for tomorrow" do
-    post :add, From: @cooper.number, Body: "Tomorrow"
+    post :twilio_endpoint, From: @cooper.number, Body: "Tomorrow"
 
     assert @cooper.late_plates.last.dt > Time.now,
       "Time was #{@cooper.late_plates.last.dt}"
@@ -33,7 +33,7 @@ class LatePlatesControllerTest < ActionController::TestCase
 
   test "adds late plates with command" do
     assert_difference -> { LatePlate.count } do
-      post :add, { From: @cooper.number, Body: "late plate" }
+      post :twilio_endpoint, { From: @cooper.number, Body: "late plate" }
     end
     assert LatePlate.last.dt <= DateTime.now
   end
@@ -41,14 +41,14 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "does not add late plate twice" do
     @cooper.late_plates.create( dt: DateTime.now )
     assert_no_difference -> { LatePlate.count } do
-      post :add, { From: @cooper.number, Body: "today" }
+      post :twilio_endpoint, { From: @cooper.number, Body: "today" }
     end
     assert_select "Message", /already/
   end
 
   test "does not break when given bad date" do
     assert_no_difference -> { @cooper.late_plates.count } do
-      post :add, { From: @cooper.number, Body: "adlghalsdhg" }
+      post :twilio_endpoint, { From: @cooper.number, Body: "adlghalsdhg" }
     end
     assert_select "Message", /sorry/i
   end
@@ -56,14 +56,14 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "removes coopers most recent late plate when given command" do
     @cooper.late_plates.create( dt: DateTime.now )
     assert_difference -> { @cooper.late_plates.count }, -1 do
-      post :add, { From: @cooper.number, Body: "Undo!" }
+      post :twilio_endpoint, { From: @cooper.number, Body: "Undo!" }
     end
     assert_select "Message", /removed/i
   end
 
   test "let's cooper know there was no plate to destroy" do
     assert_no_difference -> { @cooper.late_plates.count }, -1 do
-      post :add, { From: @cooper.number, Body: "remove." }
+      post :twilio_endpoint, { From: @cooper.number, Body: "remove." }
     end
     assert_select "Message", /don't/
   end
@@ -72,7 +72,7 @@ class LatePlatesControllerTest < ActionController::TestCase
     @cooper.late_plates.create( dt: DateTime.now )
     @cooper.late_plates.create( dt: DateTime.now.tomorrow )
     assert_no_difference -> { @cooper.late_plates.count } do
-      post :add, { From: @cooper.number, Body: "  Status" }
+      post :twilio_endpoint, { From: @cooper.number, Body: "  Status" }
     end
     assert_select "Message", /a late plate/
   end
@@ -80,7 +80,7 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "status returns if cooper has no late plate today" do
     @cooper.late_plates.create( dt: DateTime.now.tomorrow )
     assert_no_difference -> { @cooper.late_plates.count } do
-      post :add, { From: @cooper.number, Body: "Status" }
+      post :twilio_endpoint, { From: @cooper.number, Body: "Status" }
     end
     assert_select "Message", /don't/
   end
@@ -88,7 +88,7 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "fetch returns the plates tonight" do
     @cooper.late_plates.create
     @cooper.late_plates.create( dt: 1.day.from_now )
-    post :add, { From: @cooper.number, Body: "get all" }
+    post :twilio_endpoint, { From: @cooper.number, Body: "get all" }
     assert_select "Message", /1/
     assert_select "Message", /#{@cooper.name}/
   end
@@ -96,14 +96,14 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "fetch returns the plates tonight for the right house" do
     @cooper.late_plates.create
     @elmwooder.late_plates.create
-    post :add, { From: @elmwooder.number, Body: "get all" }
+    post :twilio_endpoint, { From: @elmwooder.number, Body: "get all" }
     assert_select "Message", /1/
     assert_select "Message", /#{@elmwooder.name}/
   end
 
   test "help returns some help options" do
     assert_no_difference -> { @cooper.late_plates.count } do
-      post :add, { From: @cooper.number, Body: "howto  " }
+      post :twilio_endpoint, { From: @cooper.number, Body: "howto  " }
     end
     assert_select "Message", /status/
   end
@@ -167,5 +167,10 @@ class LatePlatesControllerTest < ActionController::TestCase
       delete :destroy, id: @cooper.late_plates.last.id
     end
     assert flash[:success]
+  end
+
+  test "it gets to the help page" do
+    get :help
+    assert_response :success
   end
 end
