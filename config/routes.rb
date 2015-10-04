@@ -21,8 +21,9 @@ Rails.application.routes.draw do
   resource :sessions, only: [:create, :destroy]
   delete "signout" => "sessions#destroy"
 
-
   get 'api' => "late_plates#api"
+
+  get 'textsim' => "text_sim#new"
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
