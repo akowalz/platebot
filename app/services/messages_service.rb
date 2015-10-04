@@ -39,7 +39,7 @@ class MessagesService
         is_are: all_plates.length == 1 ? 'is' : 'are',
         count: pluralize(all_plates.count, "plate"),
         house: cooper.house.name,
-        names: all_plates.map { |plate| plate.cooper.fname }.join(",")
+        names: all_plates.map { |plate| plate.cooper.fname }.join(", ")
       }
     end
 
