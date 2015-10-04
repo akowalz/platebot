@@ -1,0 +1,19 @@
+<div class="row">
+  <h1>Simulate Sending a Text</h1>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <%= form_tag(add_path, method: "post") do |f| %>
+      <div class="form-group">
+        <%= label_tag(:From) %>
+        <%= text_field_tag(:From, Cooper.first.number, class: "form-control") %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag(:Body) %>
+        <%= text_area_tag(:Body, "", class: "form-control", rows: "5") %>
+        <%= submit_tag("Send text", class: "btn btn-primary") %>
+      </div>
+    <% end %>
+  <div>
+</div>
