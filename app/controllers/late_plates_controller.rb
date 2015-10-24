@@ -32,21 +32,16 @@ class LatePlatesController < ApplicationController
     @fetch = MessagesService.messages_config[:fetch][:triggers]
   end
 
-  def api
-    @plates = all_plates_for_today
-    render json: [@plates.map { |p| p.cooper.initialized_name }]
-  end
-
   def create
     if current_user
-      if current_user.late_plates.create
+      if !current_user.has_plate_for_today
+        current_user.late_plates.create
         flash[:success] = "Late plate added for today!"
       else
         flash[:error] = "You already have a late plate for today"
       end
       redirect_to root_path
     else
-      # they gotta sign in
       redirect_to "/auth/google_oauth2"
     end
   end
