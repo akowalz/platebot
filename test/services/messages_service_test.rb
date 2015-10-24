@@ -19,7 +19,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
     assert_equal 1, @cooper.late_plates.count
     assert_match(/has been added/, @response)
     assert_match(@cooper.fname, @response)
-    assert_match(DateTime.now.readable, @response)
+    assert_match(Date.today.readable, @response)
   end
 
   test "does not add two late plates for one day" do
@@ -40,7 +40,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
     end
 
     assert_match(/removed/, @response)
-    assert_match(DateTime.now.readable, @response)
+    assert_match(Date.today.readable, @response)
   end
 
   test "does not try to remove plates that aren't there" do
@@ -52,7 +52,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
   end
 
   test "status returns if the cooper has a late plate today" do
-    @cooper.late_plates.create( dt: DateTime.now )
+    @cooper.late_plates.create( date: Date.today )
 
     response = MessagesService.respond_to_message(@cooper.number, "status")
 
@@ -60,7 +60,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
   end
 
   test "status returns if cooper has no late plate today" do
-    @cooper.late_plates.create( dt: DateTime.now + 1 )
+    @cooper.late_plates.create( date: Date.today + 1 )
 
     response = MessagesService.respond_to_message(@cooper.number, "status")
 
@@ -77,7 +77,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
     @cooper2 = FactoryGirl.create(:cooper, number: "+12344322344", house: House.foster)
     @cooper2.late_plates.create
     @cooper.late_plates.create
-    @cooper.late_plates.create( dt: 1.day.from_now )
+    @cooper.late_plates.create( date: 1.day.from_now )
 
     response = MessagesService.respond_to_message(@cooper.number, "fetch")
 
@@ -102,7 +102,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
       @response = MessagesService.respond_to_message(@cooper.number, "tomorrow")
     end
 
-    assert @cooper.has_plate_for_day(DateTime.now + 1)
-    assert_match((DateTime.now + 1).readable, @response)
+    assert @cooper.has_plate_for_day(Date.today + 1)
+    assert_match((Date.today + 1).readable, @response)
   end
 end
