@@ -8,6 +8,7 @@ class LatePlatesControllerTest < ActionController::TestCase
 
   def teardown
     @cooper.destroy
+    @elmwooder.destroy
   end
 
   test "adds late plates for coopers" do
@@ -27,19 +28,20 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "adds late plates for tomorrow" do
     post :twilio_endpoint, From: @cooper.number, Body: "Tomorrow"
 
-    assert @cooper.late_plates.last.dt > Time.now,
-      "Time was #{@cooper.late_plates.last.dt}"
+    assert @cooper.late_plates.last.date > Time.now,
+      "Time was #{@cooper.late_plates.last.date}"
   end
 
   test "adds late plates with command" do
     assert_difference -> { LatePlate.count } do
       post :twilio_endpoint, { From: @cooper.number, Body: "late plate" }
     end
-    assert LatePlate.last.dt <= DateTime.now
+    assert LatePlate.last.date <= Date.today
   end
 
   test "does not add late plate twice" do
-    @cooper.late_plates.create( dt: DateTime.now )
+    @cooper.late_plates.create( date: Date.today )
+
     assert_no_difference -> { LatePlate.count } do
       post :twilio_endpoint, { From: @cooper.number, Body: "today" }
     end
@@ -54,7 +56,7 @@ class LatePlatesControllerTest < ActionController::TestCase
   end
 
   test "removes coopers most recent late plate when given command" do
-    @cooper.late_plates.create( dt: DateTime.now )
+    @cooper.late_plates.create( date: Date.today )
     assert_difference -> { @cooper.late_plates.count }, -1 do
       post :twilio_endpoint, { From: @cooper.number, Body: "Undo!" }
     end
@@ -69,8 +71,8 @@ class LatePlatesControllerTest < ActionController::TestCase
   end
 
   test "status returns if the cooper has a late plate today" do
-    @cooper.late_plates.create( dt: DateTime.now )
-    @cooper.late_plates.create( dt: DateTime.now.tomorrow )
+    @cooper.late_plates.create( date: Date.today )
+    @cooper.late_plates.create( date: Date.today.tomorrow )
     assert_no_difference -> { @cooper.late_plates.count } do
       post :twilio_endpoint, { From: @cooper.number, Body: "  Status" }
     end
@@ -78,7 +80,7 @@ class LatePlatesControllerTest < ActionController::TestCase
   end
 
   test "status returns if cooper has no late plate today" do
-    @cooper.late_plates.create( dt: DateTime.now.tomorrow )
+    @cooper.late_plates.create( date: Date.today.tomorrow )
     assert_no_difference -> { @cooper.late_plates.count } do
       post :twilio_endpoint, { From: @cooper.number, Body: "Status" }
     end
@@ -87,7 +89,7 @@ class LatePlatesControllerTest < ActionController::TestCase
 
   test "fetch returns the plates tonight" do
     @cooper.late_plates.create
-    @cooper.late_plates.create( dt: 1.day.from_now )
+    @cooper.late_plates.create( date: 1.day.from_now )
     post :twilio_endpoint, { From: @cooper.number, Body: "get all" }
     assert_select "Message", /1/
     assert_select "Message", /#{@cooper.name}/
@@ -109,8 +111,8 @@ class LatePlatesControllerTest < ActionController::TestCase
   end
 
   test "index lists today's late plates for both houses without a current user" do
-    @cooper.late_plates.create( dt: DateTime.now )
-    @elmwooder.late_plates.create( dt: DateTime.now )
+    @cooper.late_plates.create( date: Date.today )
+    @elmwooder.late_plates.create( date: Date.today )
 
     get :index
     assert_response 200
@@ -118,9 +120,9 @@ class LatePlatesControllerTest < ActionController::TestCase
   end
 
   test "index does not list tomorrow's late plates" do
-    @cooper.late_plates.create( dt: DateTime.now )
-    @cooper.late_plates.create( dt: DateTime.now.tomorrow )
-    @cooper.late_plates.create( dt: DateTime.now.yesterday )
+    @cooper.late_plates.create( date: Date.today )
+    @cooper.late_plates.create( date: Date.tomorrow )
+    @cooper.late_plates.create( date: Date.yesterday )
 
     get :index
     assert_response 200
@@ -138,7 +140,7 @@ class LatePlatesControllerTest < ActionController::TestCase
   end
 
   test "index lists current single plates and repeat plates for a day" do
-    @cooper.repeat_plates.create( day: DateTime.now.wday )
+    @cooper.repeat_plates.create( day: Date.today.wday )
 
     get :index
     assert_response 200
@@ -147,6 +149,7 @@ class LatePlatesControllerTest < ActionController::TestCase
 
   test "create adds a late plate for the current user" do
     sign_in(@cooper)
+
     assert_difference -> { @cooper.late_plates.for_today.count } do
       post :create
     end
@@ -174,6 +177,7 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "destroy removes a late plate" do
     sign_in(@cooper)
     @cooper.late_plates.create
+
     assert_difference -> { @cooper.late_plates.count }, -1 do
       delete :destroy, id: @cooper.late_plates.last.id
     end
