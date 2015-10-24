@@ -21,7 +21,7 @@ class HouseTest < ActiveSupport::TestCase
 
   test "gets upcoming plates" do
     n = rand(10)
-    n.times { |i| @cooper.late_plates.create( dt: (i+1).days.from_now ) }
+    n.times { |i| @cooper.late_plates.create( date: Date.today + i ) }
     assert_equal @foster.upcoming_plates.count, n
   end
 end

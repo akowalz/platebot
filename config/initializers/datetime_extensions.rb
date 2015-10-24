@@ -4,6 +4,12 @@ class DateTime
   end
 end
 
+class Date
+  def readable
+    strftime("%A, %B %-e")
+  end
+end
+
 class ActiveSupport::TimeWithZone
   def readable
     strftime("%A, %B %-e")

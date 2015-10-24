@@ -50,7 +50,7 @@ class MessagesService
     def handle_undo_command(cooper)
       plate_to_remove = cooper.late_plates.last
       if plate_to_remove
-        date = cooper.late_plates.last.dt
+        date = cooper.late_plates.last.date
         plate_to_remove.destroy
         @config[:undo][:positive_response] % {
           name: cooper.fname,
@@ -63,7 +63,7 @@ class MessagesService
     end
 
     def handle_add_command(cooper)
-      _add_late_plate_for_day(cooper, DateTime.now)
+      _add_late_plate_for_day(cooper, Date.today)
     end
 
     def handle_unknown_message(cooper, message)
@@ -71,7 +71,7 @@ class MessagesService
       if parsed_date.nil?
         @config[:unknown][:response]
       else
-        date = DateTime.parse(parsed_date.to_s)
+        date = parsed_date.to_date
         _add_late_plate_for_day(cooper, date)
       end
 
@@ -84,7 +84,7 @@ class MessagesService
           date: date.readable,
         }
       else
-        cooper.late_plates.create( dt: date )
+        cooper.late_plates.create( date: date )
         @config[:add][:positive_response] % {
           name: cooper.fname,
           date: date.readable,
