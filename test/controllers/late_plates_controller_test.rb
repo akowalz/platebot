@@ -153,6 +153,17 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert flash[:success]
   end
 
+  test "create does not add a late plate for the same day" do
+    sign_in(@cooper)
+    @cooper.late_plates.create
+
+    assert_no_difference -> { @cooper.late_plates.for_today.count } do
+      post :create
+    end
+    assert_not flash[:success]
+    assert flash[:error]
+  end
+
   test "create does not add a late plate unless signed in" do
     assert_no_difference -> { @cooper.late_plates.count } do
       post :create

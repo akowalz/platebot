@@ -48,6 +48,7 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'simplecov', require: false
 end
 
 gem 'bootstrap-sass'
