@@ -31,11 +31,14 @@ class LatePlateTest < ActiveSupport::TestCase
   end
 
   test "gets upcoming lateplates" do
-    upcoming = [2,3,4,5].sample
-    upcoming.times { |i| @cooper.late_plates.create( date: Date.today + i+1 ) }
+    3.times { |i| @cooper.late_plates.create( date: Date.today+i+1 ) }
 
-    assert_equal upcoming, LatePlate.upcoming.count
+    assert_equal 3, LatePlate.upcoming.count
     assert LatePlate.upcoming.first.date < LatePlate.upcoming.second.date
+
+    for_today = @cooper.late_plates.create
+
+    assert_not @cooper.late_plates.upcoming.include?(for_today)
   end
 
   test "the same cooper can't have 2 late plates for the same day" do

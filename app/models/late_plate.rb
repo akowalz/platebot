@@ -4,7 +4,7 @@ class LatePlate < ActiveRecord::Base
   before_validation { self.date ||= Date.today }
   validate :verify_late_plate
 
-  scope :upcoming, -> { where(" date >= ?", Date.today).order(:date) }
+  scope :upcoming, -> { where(" date > ?", Date.today).order(:date) }
   scope :for_day, -> day { where({ date: day }) }
   scope :for_today, -> { for_day(Date.today) }
   scope :for_house, -> house { joins(:cooper).where("coopers.house_id = ?", house.id) }
