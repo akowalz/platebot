@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   resources :coopers, only: [:edit, :update, :new, :create] do
     resources :repeat_plates
+    resources :phrases, only: [:index, :create, :destroy]
   end
 
   get 'feedback' => "feedback#new"
