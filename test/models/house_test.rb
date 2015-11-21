@@ -18,10 +18,4 @@ class HouseTest < ActiveSupport::TestCase
     assert_equal @elmwood.daily_plates_for_today.count, 1
     assert_equal @foster.daily_plates_for_today.count, 1
   end
-
-  test "gets upcoming plates" do
-    n = rand(10)
-    n.times { |i| @cooper.late_plates.create( date: Date.today + i ) }
-    assert_equal @foster.upcoming_plates.count, n
-  end
 end
