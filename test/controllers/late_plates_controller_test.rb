@@ -28,7 +28,7 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "adds late plates for tomorrow" do
     post :twilio_endpoint, From: @cooper.number, Body: "Tomorrow"
 
-    assert @cooper.late_plates.last.date > Time.now,
+    assert @cooper.late_plates.last.date > Date.today,
       "Time was #{@cooper.late_plates.last.date}"
   end
 

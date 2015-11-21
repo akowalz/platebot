@@ -94,7 +94,7 @@ class MessagesService
     end
 
     def nice_phrase
-      [
+      ([
         "Have a great day!",
         "You're awesome!",
         "Keep doin' you!",
@@ -109,7 +109,7 @@ class MessagesService
         "PlateBot OUT.",
         "Yabba dabba dooo!",
         "Happy trails!"
-      ].sample
+      ] + Phrase.all).sample
     end
   end
 end

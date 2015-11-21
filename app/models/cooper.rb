@@ -1,6 +1,7 @@
 class Cooper < ActiveRecord::Base
   has_many :late_plates,   dependent: :destroy
   has_many :repeat_plates, dependent: :destroy
+  has_many :phrases,       dependent: :destroy
   belongs_to :house
 
   before_validation { self.number = Cooper.clean_number(self.number) }
@@ -17,7 +18,7 @@ class Cooper < ActiveRecord::Base
   end
 
   def has_plate_for_today
-    has_plate_for_day(DateTime.now)
+    has_plate_for_day(Date.today)
   end
 
   # repeat plates
@@ -26,7 +27,7 @@ class Cooper < ActiveRecord::Base
   end
 
   def has_repeat_plate_for_today
-    has_repeat_plate_for(DateTime.now)
+    has_repeat_plate_for(Date.today)
   end
 
   # single plates
@@ -35,7 +36,7 @@ class Cooper < ActiveRecord::Base
   end
 
   def has_single_plate_for_today
-    has_single_plate_for_day(DateTime.now)
+    has_single_plate_for_day(Date.today)
   end
 
   def name

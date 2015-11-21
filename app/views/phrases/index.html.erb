@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <p>
+      Now you can add custom salutations that will go out to other coopers in their late plate texts!
+      Keep it family-friendly and have fun.
+      You're allowed up to 3 phrases, 60 characters each. So make 'em good.  You can add and remove phrases whenever you like.
+    </p>
+    <h3>Your custom phrases</h3>
+
+    <ul class="phrases">
+      <% if @phrases.empty? %>
+        <p>None yet! Add some below</p>
+      <% else %>
+        <% @phrases.each do |phrase| %>
+          <li class="phrase">
+            <em>"<%= phrase.text %>"</em>
+            <small class="text-right"><%= link_to("(delete)", cooper_phrase_path(@cooper, phrase), method: :delete) %></small>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+
+    <% if @phrases.count < 3 %>
+      <h3>Add a new phrase!</h3>
+      <%= form_for :phrase, url: cooper_phrases_path(@cooper), html: { method: :post } do |f| %>
+        <div class="form-group">
+          <%= f.label :text %>
+          <%= f.text_field :text, class: "form-control", id: "add-phrase-field" %>
+          (<span class="right" id="char-counter">60</span> characters remaining)
+
+          <%= f.submit "Add phrase", class: "btn btn-success form-control" %>
+        </div>
+      <% end %>
+      <script>
+        $("#add-phrase-field").keyup(function() {
+          $("#char-counter").html(60 - $("#add-phrase-field").val().length);
+        });
+      </script>
+    <% else %>
+      <p>you're maxed out on phrases! delete one to make room for another.</p>
+    <% end %>
+  </div>
+</div>

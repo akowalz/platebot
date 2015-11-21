@@ -9,7 +9,7 @@
     <%= "House: #{cooper.house.name}" %>
   </h4>
   <%= link_to "Add a plate for today",
-    late_plates_path,
+    late_plates_path(cooper),
     method: :post,
     class: "btn btn-primary btn-lg
     #{'disabled' if cooper.has_plate_for_today}"
@@ -31,4 +31,9 @@
       <% end %>
     <% end %>
   </div>
+  <hr/>
+  <%= link_to "Add phrases to send to coopers!",
+    cooper_phrases_path(cooper),
+    class: "btn btn-info btn-md"
+  %>
 </div>
