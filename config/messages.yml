@@ -48,7 +48,9 @@ fetch:
     - get all
     - get plates
     - get for tonight
+    - plates
   response: "There %{is_are} %{count} at %{house} today: %{names}"
+  no_plates: "No late plates at %{house} tonight! Woohoo!"
 
 unknown:
   triggers: []

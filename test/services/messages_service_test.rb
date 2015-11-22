@@ -86,6 +86,13 @@ class MessagesServiceTest < ActiveSupport::TestCase
     assert_match(/are 2 plates/, response)
   end
 
+  test "fetch tells the user there are no plates" do
+    response = MessagesService.respond_to_message(@cooper.number, "fetch")
+
+    assert_match(/No late plates/, response)
+    assert_match(Regexp.new(@cooper.house.name), response)
+  end
+
   test "fetch returns the plates tonight for the right house" do
     @cooper.late_plates.create
     @elmwooder = FactoryGirl.create(:elmwooder)

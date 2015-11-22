@@ -7,7 +7,7 @@ class MessagesService
         return "Sorry, I don't recognize this number.  Add it at plate-bot.com"
       end
 
-      messages_config.each do |key, data|
+      _config.each do |key, data|
         if body_triggers_command?(body, data[:triggers])
           return send("handle_#{key}_command", cooper)
         end
@@ -16,7 +16,7 @@ class MessagesService
       handle_unknown_message(cooper, body)
     end
 
-    def messages_config
+    def _config
       @config ||= YAML.load_file(File.join(Rails.root, "config", "messages.yml")).with_indifferent_access
     end
 
@@ -27,24 +27,31 @@ class MessagesService
 
     def handle_status_command(cooper)
       if cooper.has_plate_for_today
-        @config[:status][:positive_response] % { name: cooper.fname }
+        _config[:status][:positive_response] % { name: cooper.fname }
       else
-        @config[:status][:negative_response] % { name: cooper.fname }
+        _config[:status][:negative_response] % { name: cooper.fname }
       end
     end
 
     def handle_fetch_command(cooper)
-      all_plates = cooper.house.all_plates_for_today
-      @config[:fetch][:response] % {
-        is_are: all_plates.length == 1 ? 'is' : 'are',
-        count: pluralize(all_plates.count, "plate"),
-        house: cooper.house.name,
-        names: all_plates.map { |plate| plate.cooper.fname }.join(", ")
-      }
+      plates = cooper.house.all_plates_for_today
+
+      if plates.empty?
+        _config[:fetch][:no_plates] % {
+          house: cooper.house.name,
+        }
+      else
+        _config[:fetch][:response] % {
+          is_are: plates.length == 1 ? 'is' : 'are',
+          count: pluralize(plates.count, "plate"),
+          house: cooper.house.name,
+          names: plates.map { |plate| plate.cooper.fname }.join(", ")
+        }
+      end
     end
 
     def handle_help_command(cooper)
-      return @config[:help][:response]
+      return _config[:help][:response]
     end
 
     def handle_undo_command(cooper)
@@ -52,13 +59,13 @@ class MessagesService
       if plate_to_remove
         date = cooper.late_plates.last.date
         plate_to_remove.destroy
-        @config[:undo][:positive_response] % {
+        _config[:undo][:positive_response] % {
           name: cooper.fname,
           date: date.readable,
           nice_phrase: nice_phrase
         }
       else
-        @config[:undo][:negative_response] % { name: cooper.fname }
+        _config[:undo][:negative_response] % { name: cooper.fname }
       end
     end
 
@@ -69,7 +76,7 @@ class MessagesService
     def handle_unknown_message(cooper, message)
       parsed_date = Chronic.parse(message)
       if parsed_date.nil?
-        @config[:unknown][:response]
+        _config[:unknown][:response]
       else
         date = parsed_date.to_date
         _add_late_plate_for_day(cooper, date)
@@ -79,13 +86,13 @@ class MessagesService
 
     def _add_late_plate_for_day(cooper, date)
       if cooper.has_plate_for_day(date)
-        @config[:add][:negative_response] % {
+        _config[:add][:negative_response] % {
           name: cooper.fname,
           date: date.readable,
         }
       else
         cooper.late_plates.create( date: date )
-        @config[:add][:positive_response] % {
+        _config[:add][:positive_response] % {
           name: cooper.fname,
           date: date.readable,
           nice_phrase: nice_phrase

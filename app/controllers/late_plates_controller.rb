@@ -26,10 +26,10 @@ class LatePlatesController < ApplicationController
   end
 
   def help
-    @undo = MessagesService.messages_config[:undo][:triggers]
-    @help = MessagesService.messages_config[:help][:triggers]
-    @status = MessagesService.messages_config[:status][:triggers]
-    @fetch = MessagesService.messages_config[:fetch][:triggers]
+    @undo = MessagesService._config[:undo][:triggers]
+    @help = MessagesService._config[:help][:triggers]
+    @status = MessagesService._config[:status][:triggers]
+    @fetch = MessagesService._config[:fetch][:triggers]
   end
 
   def create
