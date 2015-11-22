@@ -109,7 +109,7 @@ class MessagesService
         "PlateBot OUT.",
         "Yabba dabba dooo!",
         "Happy trails!"
-      ] + Phrase.all).sample
+      ] + Phrase.all.map(&:text)).sample
     end
   end
 end
