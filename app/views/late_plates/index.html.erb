@@ -11,14 +11,14 @@
     <div class="row">
       <% if !current_user || current_user.lives_in_foster? %>
         <div class="col-md-6">
-          <h2>Foster (the Zooo)</h2>
+          <h2>The Zooo</h2>
           <%= render "plate_table", { plates: @foster_plates } %>
         </div>
       <% end %>
 
       <% if !current_user || current_user.lives_in_elmwood? %>
         <div class="col-md-6">
-          <h2>Elmwood</h2>
+          <h2>The Treehouse</h2>
           <%= render "plate_table", { plates: @elmwood_plates } %>
         </div>
       <% end %>
@@ -45,5 +45,5 @@
     </div>
   </div>
 
-    <%= render("shared/user_panel", { cooper: current_user }) if current_user %>
+  <%= render("shared/user_panel", { cooper: current_user }) if current_user %>
 </div>
