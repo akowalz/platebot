@@ -48,11 +48,11 @@ class Cooper < ActiveRecord::Base
   end
 
   def lives_in_foster?
-    house.name == "Foster"
+    house == House.foster
   end
 
   def lives_in_elmwood?
-    house.name == "Elmwood"
+    house == House.elmwood
   end
 
   def Cooper.clean_number(number)
