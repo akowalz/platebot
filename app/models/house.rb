@@ -1,8 +1,8 @@
 class House < ActiveRecord::Base
   has_many :coopers
 
-  scope :foster, -> { find_by( name: "Foster" ) }
-  scope :elmwood, -> { find_by( name: "Elmwood" ) }
+  scope :foster, -> { find_by( name: "The Zooo" ) }
+  scope :elmwood, -> { find_by( name: "The Treehouse" ) }
 
   def daily_plates_for_today
     LatePlate.for_house(self).for_today
