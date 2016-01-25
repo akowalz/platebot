@@ -104,18 +104,13 @@ class MessagesService
       ([
         "Have a great day!",
         "You're awesome!",
-        "Keep doin' you!",
         "Have a fantastic day!",
-        "Hope you like vegetarian!",
         "Yum yum yum !!!",
         "Keep on truckin'!",
         "Treat yo self!",
         "It's gon' be good'",
-        "Live long and prosper",
         "May the force be with you",
         "PlateBot OUT.",
-        "Yabba dabba dooo!",
-        "Happy trails!"
       ] + Phrase.all.map(&:text)).sample
     end
   end
