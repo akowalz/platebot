@@ -27,6 +27,7 @@ gem 'twilio-ruby'
 gem 'chronic'
 gem 'pg'
 gem 'obscenity'
+gem 'sentry-raven'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
