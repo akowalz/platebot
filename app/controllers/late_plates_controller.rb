@@ -7,7 +7,13 @@ class LatePlatesController < ApplicationController
     from_number = params[:From]
     message_body = params[:Body]
 
-    message = MessagesService.respond_to_message(from_number, message_body)
+    cooper = Cooper.find_by(number: from_number)
+    if cooper.nil?
+      render status: 403, nothing: true, layout: false
+      return
+    end
+
+    message = MessagesService.respond_to_message(cooper, message_body)
 
     twiml = Twilio::TwiML::Response.new { |r| r.Message(message) }
 
