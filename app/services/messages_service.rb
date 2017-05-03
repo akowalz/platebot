@@ -2,11 +2,7 @@ class MessagesService
   class << self
     include ActionView::Helpers::TextHelper
 
-    def respond_to_message(from, body)
-      unless cooper = Cooper.find_by(number: from)
-        return "Sorry, I don't recognize this number.  Add it at plate-bot.com"
-      end
-
+    def respond_to_message(cooper, body)
       _config.each do |key, data|
         if body_triggers_command?(body, data[:triggers])
           return send("handle_#{key}_command", cooper)

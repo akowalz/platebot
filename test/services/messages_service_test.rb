@@ -6,14 +6,9 @@ class MessagesServiceTest < ActiveSupport::TestCase
     @cooper = FactoryGirl.create(:cooper)
   end
 
-  test "doesn't do anything for unknown numbers" do
-    response = MessagesService.respond_to_message("+1983927483", "add")
-    assert_match(/Sorry/i, response)
-  end
-
   test "adds late plates for coopers" do
     assert_difference -> { LatePlate.count } do
-      @response = MessagesService.respond_to_message(@cooper.number, "add")
+      @response = MessagesService.respond_to_message(@cooper, "add")
     end
 
     assert_equal 1, @cooper.late_plates.count
@@ -26,7 +21,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
     @cooper.late_plates.create
 
     assert_no_difference -> { LatePlate.count } do
-      @response = MessagesService.respond_to_message(@cooper.number, "add")
+      @response = MessagesService.respond_to_message(@cooper, "add")
     end
 
     assert_match(/already/, @response)
@@ -36,7 +31,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
     @cooper.late_plates.create
 
     assert_difference -> { @cooper.late_plates.count }, -1 do
-      @response = MessagesService.respond_to_message(@cooper.number, "undo")
+      @response = MessagesService.respond_to_message(@cooper, "undo")
     end
 
     assert_match(/removed/, @response)
@@ -45,7 +40,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
 
   test "does not try to remove plates that aren't there" do
     assert_no_difference -> { @cooper.late_plates.count } do
-      @response = MessagesService.respond_to_message(@cooper.number, "undo")
+      @response = MessagesService.respond_to_message(@cooper, "undo")
     end
 
     assert_match(/don't have/, @response)
@@ -54,7 +49,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
   test "status returns if the cooper has a late plate today" do
     @cooper.late_plates.create( date: Date.today )
 
-    response = MessagesService.respond_to_message(@cooper.number, "status")
+    response = MessagesService.respond_to_message(@cooper, "status")
 
     assert_match(/you have/, response)
   end
@@ -62,13 +57,13 @@ class MessagesServiceTest < ActiveSupport::TestCase
   test "status returns if cooper has no late plate today" do
     @cooper.late_plates.create( date: Date.today + 1 )
 
-    response = MessagesService.respond_to_message(@cooper.number, "status")
+    response = MessagesService.respond_to_message(@cooper, "status")
 
     assert_match(/don't have/, response)
   end
 
   test "it responds with the help message" do
-    response = MessagesService.respond_to_message(@cooper.number, "halp")
+    response = MessagesService.respond_to_message(@cooper, "halp")
 
     assert_match(/Try something like/, response)
   end
@@ -79,7 +74,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
     @cooper.late_plates.create
     @cooper.late_plates.create( date: 1.day.from_now )
 
-    response = MessagesService.respond_to_message(@cooper.number, "fetch")
+    response = MessagesService.respond_to_message(@cooper, "fetch")
 
     assert_match(@cooper.name, response)
     assert_match(@cooper2.name, response)
@@ -87,7 +82,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
   end
 
   test "fetch tells the user there are no plates" do
-    response = MessagesService.respond_to_message(@cooper.number, "fetch")
+    response = MessagesService.respond_to_message(@cooper, "fetch")
 
     assert_match(/No late plates/, response)
     assert_match(Regexp.new(@cooper.house.name), response)
@@ -98,7 +93,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
     @elmwooder = FactoryGirl.create(:elmwooder)
     @elmwooder.late_plates.create
 
-    response = MessagesService.respond_to_message(@elmwooder.number, "fetch")
+    response = MessagesService.respond_to_message(@elmwooder, "fetch")
 
     assert_match(@elmwooder.name, response)
     assert_match(/is 1 plate /, response)
@@ -106,7 +101,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
 
   test "it parses unknown messages" do
     assert_difference -> { @cooper.late_plates.count } do
-      @response = MessagesService.respond_to_message(@cooper.number, "tomorrow")
+      @response = MessagesService.respond_to_message(@cooper, "tomorrow")
     end
 
     assert @cooper.has_plate_for_day(Date.today + 1)

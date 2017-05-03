@@ -18,11 +18,10 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert_equal 1, @cooper.late_plates.count
   end
 
-  test "does not add plate for strangers" do
-    assert_no_difference -> { LatePlate.count } do
-      post :twilio_endpoint, { From: "+5235556666", Body: "Today" }
-    end
-    assert @cooper.late_plates.count == 0
+  test "returns a 403 for strangers" do
+    post :twilio_endpoint, { From: "+5235556666", Body: "Today" }
+
+    assert_response 403
   end
 
   test "adds late plates for tomorrow" do
