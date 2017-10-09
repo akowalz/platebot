@@ -5,6 +5,7 @@ class Cooper < ActiveRecord::Base
   belongs_to :house
 
   before_validation { self.number = Cooper.clean_number(self.number) }
+  before_create { self.activation_code = rand(9999).to_s.rjust(4, "0") }
 
   validates :fname, { presence: true }
   validates :lname, { presence: true }

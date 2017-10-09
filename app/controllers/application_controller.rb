@@ -5,6 +5,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
 
   def error
-    raise "inentionally raising error"
+    raise "intentionally raising error"
   end
 end

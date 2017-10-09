@@ -8,7 +8,6 @@ class SessionsController < ApplicationController
       redirect_to root_path
     else
       # they need to provide more info to sign up
-      @cooper = Cooper.find_by_lname(@auth[:info][:last_name])
       render template: 'coopers/new'
     end
   end

@@ -9,17 +9,17 @@ class CoopersControllerTest < ActionController::TestCase
     @cooper.destroy
   end
 
-  test "create creates a cooper with valid information" do
+  test "#create creates a cooper with valid information" do
     assert_difference -> { Cooper.count } do
       post :create, { cooper: {
-        fname: "Foo",
-        lname: "Bar",
+        fname: "foo",
+        lname: "bar",
         house_id: 0,
         number: "+12225556666",
-        uid:    "123abc456" }
+        uid: "123abc456" }
       }
-      assert_redirected_to root_path
-      assert_not_nil flash[:success]
+
+      assert_redirected_to activation_cooper_path(Cooper.find_by(uid: "123abc456"))
       assert cookies[:cooper_id]
     end
   end
@@ -37,30 +37,6 @@ class CoopersControllerTest < ActionController::TestCase
       assert_not_nil flash[:error]
       assert_not cookies[:cooper_id]
     end
-  end
-
-  test "it adds uid to existing accounts" do
-    @cooper = Cooper.create({
-      fname: "Foo",
-      lname: "Bar",
-      house_id: 0,
-      number: "+12223334545"
-    })
-
-    assert_no_difference -> { Cooper.count } do
-      post :create, { cooper: {
-        fname: "Foo",
-        lname: "Bar",
-        house_id: 0,
-        number: "222-333-4545",
-        uid: "123abc" }
-      }
-    end
-
-    assert_equal "123abc", @cooper.reload.uid
-    assert_redirected_to root_path
-    assert_not_nil flash[:success]
-    assert cookies[:cooper_id]
   end
 
   test "users can view form to edit their information" do
@@ -102,5 +78,25 @@ class CoopersControllerTest < ActionController::TestCase
     assert_not_equal invalid_number, @cooper.number
     assert_template "edit"
     assert_not_nil flash.now[:error]
+  end
+
+  test "activation with valid activation code" do
+    post :activate,
+      id: @cooper.id.to_s,
+      cooper: { activation_code: @cooper.activation_code }
+
+    assert @cooper.reload.active
+    assert_not_nil flash[:success]
+    assert_redirected_to root_path
+  end
+
+  test "activation with invalid activation code" do
+    patch :activate,
+      id: @cooper.id.to_s,
+      cooper: { activation_code: "invalid" }
+
+    assert_not @cooper.reload.active
+    assert_not_nil flash[:error]
+    assert_redirected_to activation_cooper_path
   end
 end

@@ -9,6 +9,10 @@ class CooperTest < ActiveSupport::TestCase
     assert @cooper.valid?
   end
 
+  test "generates activation_code before save" do
+    assert_match /\d{4}/, @cooper.activation_code
+  end
+
   test "sanitizes somewhat wrong legal phone numbers" do
     numbers = [
       "+17863738989",

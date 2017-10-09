@@ -11,19 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151101233345) do
+ActiveRecord::Schema.define(version: 20171009220503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "coopers", force: :cascade do |t|
     t.string   "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.string   "fname"
     t.string   "lname"
     t.string   "uid"
     t.integer  "house_id"
+    t.boolean  "active"
+    t.string   "activation_code"
   end
 
   add_index "coopers", ["number"], name: "index_coopers_on_number", using: :btree
