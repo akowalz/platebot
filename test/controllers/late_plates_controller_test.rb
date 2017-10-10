@@ -24,6 +24,14 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert_response 403
   end
 
+  test "returns 403 for unactivated accounts" do
+    @cooper = FactoryGirl.create(:cooper, active: false)
+
+    post :twilio_endpoint, { From: @cooper.number, Body: "Today" }
+
+    assert_response 403
+  end
+
   test "adds late plates for tomorrow" do
     post :twilio_endpoint, From: @cooper.number, Body: "Tomorrow"
 

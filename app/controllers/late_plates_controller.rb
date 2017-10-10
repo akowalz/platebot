@@ -8,7 +8,7 @@ class LatePlatesController < ApplicationController
     message_body = params[:Body]
 
     cooper = Cooper.find_by(number: from_number)
-    if cooper.nil?
+    if cooper.nil? || !cooper.active?
       render status: 403, nothing: true, layout: false
       return
     end

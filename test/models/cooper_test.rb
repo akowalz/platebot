@@ -53,6 +53,6 @@ class CooperTest < ActiveSupport::TestCase
   end
 
   test "it can find coopers with unclean numbers" do
-    assert_equal @cooper, Cooper.find_by_uncleaned_number("914-406-8888")
+    assert_equal @cooper, Cooper.find_by_uncleaned_number(@cooper.number[2..-1])
   end
 end

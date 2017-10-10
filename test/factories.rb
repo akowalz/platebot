@@ -3,15 +3,13 @@ FactoryGirl.define do
     fname "Chip"
     lname "Witly"
     house House.foster
-    number "+19144068888"
+    sequence(:number) { "+1914406#{rand(9999).to_s.rjust(4, "0")}" }
     uid "123456789"
+    active true
+    activation_code "1234"
   end
 
-  factory :elmwooder, class: Cooper do
-    fname "Woody"
-    lname "Elm"
+  factory :elmwooder, parent: :cooper do
     house House.elmwood
-    number "+14534239090"
-    uid "90909090"
   end
 end
