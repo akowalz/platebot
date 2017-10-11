@@ -2,10 +2,10 @@
   <div class="col-md-6 col-md-offset-3">
     <h1>Enter your confirmation code</h1>
     <p>A confirmation code was just texted to the phone number you provided. Enter it here</p>
-    <%= form_for @cooper, url: activate_cooper_path do |f| %>
+    <%= form_for @cooper, url: cooper_sms_confirmations_path(@cooper) do |f| %>
       <div class="form-group">
-        <%= f.label :activation_code, "Activation Code" %>
-        <%= f.text_field :activation_code, class: "form-control", value: "" %>
+        <%= f.label :sms_confirmation_code, "Confirmation Code" %>
+        <%= f.text_field :sms_confirmation_code, class: "form-control", value: "" %>
       </div>
 
       <%= f.submit "Submit", class: "btn btn-block btn-success" %>

@@ -24,8 +24,8 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert_response 403
   end
 
-  test "returns 403 for unactivated accounts" do
-    @cooper = FactoryGirl.create(:cooper, active: false)
+  test "returns 403 for accounts that have not been sms_confirmed" do
+    @cooper = FactoryGirl.create(:cooper, sms_confirmed: false)
 
     post :twilio_endpoint, { From: @cooper.number, Body: "Today" }
 

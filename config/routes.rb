@@ -11,10 +11,7 @@ Rails.application.routes.draw do
   get 'quick_add' => "late_plates#create"
 
   resources :coopers, only: [:edit, :update, :new, :create] do
-    member do
-      get "activation"
-      patch "activate"
-    end
+    resources :sms_confirmations, only: [:new, :create]
 
     resources :repeat_plates
     resources :phrases, only: [:index, :create, :destroy]

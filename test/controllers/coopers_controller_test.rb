@@ -19,7 +19,7 @@ class CoopersControllerTest < ActionController::TestCase
         uid: "123abc456" }
       }
 
-      assert_redirected_to activation_cooper_path(Cooper.find_by(uid: "123abc456"))
+      assert_redirected_to new_cooper_sms_confirmation_path(Cooper.find_by(uid: "123abc456"))
       assert cookies[:cooper_id]
     end
   end
@@ -78,25 +78,5 @@ class CoopersControllerTest < ActionController::TestCase
     assert_not_equal invalid_number, @cooper.number
     assert_template "edit"
     assert_not_nil flash.now[:error]
-  end
-
-  test "activation with valid activation code" do
-    post :activate,
-      id: @cooper.id.to_s,
-      cooper: { activation_code: @cooper.activation_code }
-
-    assert @cooper.reload.active
-    assert_not_nil flash[:success]
-    assert_redirected_to root_path
-  end
-
-  test "activation with invalid activation code" do
-    patch :activate,
-      id: @cooper.id.to_s,
-      cooper: { activation_code: "invalid" }
-
-    assert_not @cooper.reload.active
-    assert_not_nil flash[:error]
-    assert_redirected_to activation_cooper_path
   end
 end

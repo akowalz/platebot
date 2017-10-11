@@ -8,9 +8,9 @@ class CoopersController < ApplicationController
 
       sign_in(@cooper)
 
-      TwilioClient.send_message("Your Platebot confirmation code is #{@cooper.activation_code}", @cooper.number)
+      TwilioClient.send_message("Your Platebot confirmation code is #{@cooper.sms_confirmation_code}", @cooper.number)
 
-      redirect_to activation_cooper_path(@cooper)
+      redirect_to new_cooper_sms_confirmation_path(@cooper)
     else
       flash[:error] = @cooper.errors.full_messages
 
@@ -35,25 +35,6 @@ class CoopersController < ApplicationController
     end
   end
 
-  def activation
-    @cooper = Cooper.find(params[:id])
-  end
-
-  def activate
-    @cooper = Cooper.find(params[:id])
-
-    activation_code = activation_params[:activation_code]
-
-    if activation_code == @cooper.activation_code
-      @cooper.update_attributes(active: true)
-      flash[:success] = "Success! Platebot now knows your number. Text Platebot 'status' to test it out"
-      redirect_to root_path
-    else
-      flash[:error] = "Sorry, that activation code isn't correct. Please try again"
-      redirect_to activation_cooper_path
-    end
-  end
-
   private
     def cooper_params
       params.require(:cooper).permit(
@@ -63,9 +44,5 @@ class CoopersController < ApplicationController
         :number,
         :uid,
       )
-    end
-
-    def activation_params
-      params.require(:cooper).permit(:activation_code)
     end
 end
