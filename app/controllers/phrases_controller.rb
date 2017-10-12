@@ -1,12 +1,13 @@
 class PhrasesController < ApplicationController
-  before_action :verify_cooper
+  before_action :lookup_cooper
+  before_action :verify_current_user
 
   def index
-    @phrases = _cooper.phrases.all
+    @phrases = @cooper.phrases.all
   end
 
   def create
-    phrase = _cooper.phrases.new(phrase_params)
+    phrase = @cooper.phrases.new(phrase_params)
 
     if phrase.valid?
       flash[:success] = "Your phrase has been added!"
@@ -15,23 +16,18 @@ class PhrasesController < ApplicationController
       flash[:error] = phrase.errors.full_messages
     end
 
-    redirect_to cooper_phrases_path(_cooper)
+    redirect_to cooper_phrases_path(@cooper)
   end
 
   def destroy
     Phrase.find(params[:id]).destroy
     flash[:success] = "Phrase has been removed!"
-    redirect_to cooper_phrases_path(_cooper)
+    redirect_to cooper_phrases_path(@cooper)
   end
 
-  def verify_cooper
-    unless current_user && current_user == _cooper
-      flash[:warning] = "Please sign in first!"
-      redirect_to root_path
-    end
-  end
+  private
 
-  def _cooper
+  def lookup_cooper
     @cooper ||= Cooper.find(params[:cooper_id])
   end
 

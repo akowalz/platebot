@@ -1,7 +1,3 @@
-require 'twilio-ruby'
-require 'chronic'
-require 'late_plates_helper'
-
 class LatePlatesController < ApplicationController
   def twilio_endpoint
     from_number = params[:From]
@@ -39,17 +35,14 @@ class LatePlatesController < ApplicationController
   end
 
   def create
-    if current_user
-      if !current_user.has_plate_for_today
-        current_user.late_plates.create
-        flash[:success] = "Late plate added for today!"
-      else
-        flash[:error] = "You already have a late plate for today"
-      end
-      redirect_to root_path
+    if !current_user.has_plate_for_today
+      current_user.late_plates.create
+      flash[:success] = "Late plate added for today!"
     else
-      redirect_to "/auth/google_oauth2"
+      flash[:error] = "You already have a late plate for today"
     end
+
+    redirect_to root_path
   end
 
   def destroy

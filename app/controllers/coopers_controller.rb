@@ -1,6 +1,9 @@
 require 'twilio-ruby'
 
 class CoopersController < ApplicationController
+  before_action :lookup_cooper, only: [:edit, :update]
+  before_action :verify_current_user, only: [:edit, :update]
+
   def create
     @cooper = Cooper.new(cooper_params)
     if @cooper.valid?
@@ -19,30 +22,31 @@ class CoopersController < ApplicationController
   end
 
   def edit
-    @cooper = Cooper.find(params[:id])
   end
 
   def update
-    @cooper = Cooper.find(params[:id])
-
     if @cooper.update_attributes(cooper_params)
       flash[:success] = "Your info has been updated!"
       redirect_to root_path
     else
-
       flash.now[:error] = @cooper.errors.full_messages
       render 'edit'
     end
   end
 
   private
-    def cooper_params
-      params.require(:cooper).permit(
-        :fname,
-        :lname,
-        :house_id,
-        :number,
-        :uid,
-      )
-    end
+
+  def lookup_cooper
+    @cooper = Cooper.find(params[:id])
+  end
+
+  def cooper_params
+    params.require(:cooper).permit(
+      :fname,
+      :lname,
+      :house_id,
+      :number,
+      :uid,
+    )
+  end
 end

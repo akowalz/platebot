@@ -25,7 +25,7 @@ class CoopersControllerTest < ActionController::TestCase
     end
   end
 
-  test "does not create cooper with invalid information" do
+  test "#create does not create cooper with invalid information" do
     assert_no_difference -> { Cooper.count } do
       post :create,
         cooper: {
@@ -41,16 +41,22 @@ class CoopersControllerTest < ActionController::TestCase
     end
   end
 
-  test "users can view form to edit their information" do
+  test "#edit users can view form to edit their information" do
+    sign_in(@cooper)
+
     get :edit, { id: @cooper.id.to_s }
+
     assert_response :success
     assert_select "form"
   end
 
-  test "submiting form with valid information updates cooper" do
+  test "#update submiting form with valid information updates cooper" do
+    sign_in(@cooper)
+
     new_number = "111-222-3333"
     new_first = "Bill"
     new_last = "Ready"
+
     patch :update,
       id: @cooper.id.to_s,
       cooper: {
@@ -67,9 +73,11 @@ class CoopersControllerTest < ActionController::TestCase
     assert_not_nil flash[:success]
   end
 
+  test "#update submiting form with invalid information rerenders form" do
+    sign_in(@cooper)
 
-  test "submiting form with invalid information rerenders form" do
     invalid_number = "111-22-3333"
+
     patch :update,
       id: @cooper.id.to_s,
       cooper: {

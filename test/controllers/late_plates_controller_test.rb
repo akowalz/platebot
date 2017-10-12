@@ -201,7 +201,7 @@ class LatePlatesControllerTest < ActionController::TestCase
       post :create
     end
 
-    assert_redirected_to "/auth/google_oauth2"
+    assert_redirected_to root_path
   end
 
   test "destroy removes a late plate" do
