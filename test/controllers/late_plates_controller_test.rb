@@ -33,106 +33,6 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert_response 403
   end
 
-  test "adds late plates for tomorrow" do
-    post :twilio_endpoint, From: @cooper.number, Body: "Tomorrow"
-
-    assert @cooper.late_plates.last.date > Date.today,
-      "Time was #{@cooper.late_plates.last.date}"
-  end
-
-  test "adds late plates with command" do
-    assert_difference -> { LatePlate.count } do
-      post :twilio_endpoint, { From: @cooper.number, Body: "late plate" }
-    end
-
-    assert LatePlate.last.date <= Date.today
-  end
-
-  test "does not add late plate twice" do
-    @cooper.late_plates.create( date: Date.today )
-
-    assert_no_difference -> { LatePlate.count } do
-      post :twilio_endpoint, { From: @cooper.number, Body: "today" }
-    end
-
-    assert_select "Message", /already/
-  end
-
-  test "does not break when given bad date" do
-    assert_no_difference -> { @cooper.late_plates.count } do
-      post :twilio_endpoint, { From: @cooper.number, Body: "adlghalsdhg" }
-    end
-
-    assert_select "Message", /sorry/i
-  end
-
-  test "removes coopers most recent late plate when given command" do
-    @cooper.late_plates.create( date: Date.today )
-
-    assert_difference -> { @cooper.late_plates.count }, -1 do
-      post :twilio_endpoint, { From: @cooper.number, Body: "Undo!" }
-    end
-
-    assert_select "Message", /removed/i
-  end
-
-  test "let's cooper know there was no plate to destroy" do
-    assert_no_difference -> { @cooper.late_plates.count }, -1 do
-      post :twilio_endpoint, { From: @cooper.number, Body: "remove." }
-    end
-
-    assert_select "Message", /don't/
-  end
-
-  test "status returns if the cooper has a late plate today" do
-    @cooper.late_plates.create( date: Date.today )
-    @cooper.late_plates.create( date: Date.today.tomorrow )
-
-    assert_no_difference -> { @cooper.late_plates.count } do
-      post :twilio_endpoint, { From: @cooper.number, Body: "  Status" }
-    end
-
-    assert_select "Message", /a late plate/
-  end
-
-  test "status returns if cooper has no late plate today" do
-    @cooper.late_plates.create( date: Date.today.tomorrow )
-
-    assert_no_difference -> { @cooper.late_plates.count } do
-      post :twilio_endpoint, { From: @cooper.number, Body: "Status" }
-    end
-
-    assert_select "Message", /don't/
-  end
-
-  test "fetch returns the plates tonight" do
-    @cooper.late_plates.create
-    @cooper.late_plates.create( date: 1.day.from_now )
-
-    post :twilio_endpoint, { From: @cooper.number, Body: "get all" }
-
-    assert_select "Message", /1/
-    assert_select "Message", /#{@cooper.name}/
-  end
-
-  test "fetch returns the plates tonight for the right house" do
-    @cooper.late_plates.create
-    @elmwooder.late_plates.create
-
-    post :twilio_endpoint, { From: @elmwooder.number, Body: "get all" }
-
-    assert_select "Message", /1/
-    assert_select "Message", /#{@elmwooder.name}/
-  end
-
-  test "help returns some help options" do
-    assert_no_difference -> { @cooper.late_plates.count } do
-      post :twilio_endpoint, { From: @cooper.number, Body: "howto  " }
-    end
-
-    assert_select "Message", /status/
-  end
-
   test "index lists today's late plates for both houses without a current user" do
     @cooper.late_plates.create( date: Date.today )
     @elmwooder.late_plates.create( date: Date.today )
@@ -156,6 +56,7 @@ class LatePlatesControllerTest < ActionController::TestCase
 
   test "if user is signed in, it shows the plates from their house" do
     sign_in @elmwooder
+
     @elmwooder.late_plates.create
     @cooper.late_plates.create
 
@@ -201,7 +102,7 @@ class LatePlatesControllerTest < ActionController::TestCase
       post :create
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to "/auth/google_oauth2/"
   end
 
   test "destroy removes a late plate" do

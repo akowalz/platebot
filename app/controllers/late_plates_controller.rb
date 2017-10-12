@@ -35,6 +35,8 @@ class LatePlatesController < ApplicationController
   end
 
   def create
+    return redirect_to "/auth/google_oauth2/" unless current_user
+
     if !current_user.has_plate_for_today
       current_user.late_plates.create
       flash[:success] = "Late plate added for today!"
