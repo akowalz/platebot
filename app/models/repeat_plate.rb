@@ -4,7 +4,7 @@ class RepeatPlate < ActiveRecord::Base
   validate :check_for_duplicate
 
   scope :for_today, -> { for_day(DateTime.now) }
-  scope :for_house, -> house { joins(:cooper).where("coopers.house_id = ?", house.id) }
+  scope :for_house, -> house { joins(:cooper).where(coopers: {house_id: house, current_member: true}) }
   scope :for_foster, -> { for_house(House.foster) }
   scope :for_elmwood, -> { for_house(House.elmwood) }
 

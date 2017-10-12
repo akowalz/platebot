@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011142344) do
+ActiveRecord::Schema.define(version: 20171012014243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20171011142344) do
     t.integer  "house_id"
     t.string   "sms_confirmation_code"
     t.boolean  "sms_confirmed"
+    t.boolean  "current_member"
   end
 
   add_index "coopers", ["number"], name: "index_coopers_on_number", using: :btree

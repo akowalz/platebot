@@ -7,6 +7,7 @@ FactoryGirl.define do
     uid { Faker::Number }
     sms_confirmed true
     sms_confirmation_code "1234"
+    current_member true
   end
 
   factory :elmwooder, parent: :cooper do

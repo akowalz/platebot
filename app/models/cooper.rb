@@ -5,12 +5,17 @@ class Cooper < ActiveRecord::Base
   belongs_to :house
 
   before_validation { self.number = Cooper.clean_number(self.number) }
-  before_create { self.sms_confirmation_code = rand(9999).to_s.rjust(4, "0") }
+  before_create :set_initial_attributes
 
   validates :fname, { presence: true }
   validates :lname, { presence: true }
   validates :number, { uniqueness: true }
   validates_format_of :number, { with: /\A\+1\d{10}\z/ }
+
+  def set_initial_attributes
+    self.sms_confirmation_code = rand(9999).to_s.rjust(4, "0")
+    self.current_member = true
+  end
 
   # all plates
   def has_plate_for_day(day)

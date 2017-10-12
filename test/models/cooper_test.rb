@@ -13,6 +13,10 @@ class CooperTest < ActiveSupport::TestCase
     assert_match /\d{4}/, @cooper.sms_confirmation_code
   end
 
+  test "members are created as active by default" do
+    assert @cooper.current_member?
+  end
+
   test "sanitizes somewhat wrong legal phone numbers" do
     numbers = [
       "+17863738989",

@@ -23,11 +23,13 @@ class LatePlateTest < ActiveSupport::TestCase
 
   test "gets late plates for a particular day" do
     @cooper.late_plates.create( date: Date.today + 100 )
+
     assert_equal LatePlate.for_day( Date.today + 100 ).count, 1
   end
 
   test "gets for a particular house on a particular day" do
     @elmwooder.late_plates.create( date: Date.today + 100)
+
     assert_equal LatePlate.for_house(@elmwooder.house).for_day( Date.today + 100).count, 1
   end
 

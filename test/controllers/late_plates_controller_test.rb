@@ -75,6 +75,17 @@ class LatePlatesControllerTest < ActionController::TestCase
     assert_select ".late-plate", count: 1
   end
 
+  test "index does not list repeat plates for members who are not current" do
+    inactive_cooper = create(:cooper)
+    inactive_cooper.update_attributes(current_member: false)
+    inactive_cooper.repeat_plates.create(day: Date.today.wday)
+
+    get :index
+
+    assert_response 200
+    assert_select ".late-plate", count: 0
+  end
+
   test "create adds a late plate for the current user" do
     sign_in(@cooper)
 
