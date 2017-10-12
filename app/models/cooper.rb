@@ -66,5 +66,4 @@ class Cooper < ActiveRecord::Base
     number = Cooper.clean_number(number)
     Cooper.find_by_number(number)
   end
-
 end

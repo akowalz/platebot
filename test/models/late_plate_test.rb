@@ -2,8 +2,8 @@ require 'test_helper'
 
 class LatePlateTest < ActiveSupport::TestCase
   def setup
-    @cooper = FactoryGirl.create(:cooper)
-    @elmwooder = FactoryGirl.create(:elmwooder)
+    @cooper = create(:cooper)
+    @elmwooder = create(:elmwooder)
   end
 
   def teardown
@@ -12,8 +12,10 @@ class LatePlateTest < ActiveSupport::TestCase
 
   test "gets late plates for a particular house" do
     assert LatePlate.for_house(@cooper.house).empty?
+
     @cooper.late_plates.create!
     assert_equal LatePlate.for_house(@cooper.house).count, 1
+
     @elmwooder.late_plates.create!
     assert_equal LatePlate.for_house(@elmwooder.house).count, 1
     assert_equal LatePlate.for_house(@cooper.house).count, 1
@@ -27,7 +29,6 @@ class LatePlateTest < ActiveSupport::TestCase
   test "gets for a particular house on a particular day" do
     @elmwooder.late_plates.create( date: Date.today + 100)
     assert_equal LatePlate.for_house(@elmwooder.house).for_day( Date.today + 100).count, 1
-
   end
 
   test "gets upcoming lateplates" do
@@ -43,9 +44,11 @@ class LatePlateTest < ActiveSupport::TestCase
 
   test "the same cooper can't have 2 late plates for the same day" do
     @cooper.late_plates.create( date: Date.tomorrow )
+
     assert_no_difference -> { @cooper.late_plates.count } do
       @cooper.late_plates.create( date: Date.tomorrow )
     end
+
     assert_difference -> { @cooper.late_plates.count }, +1 do
       @cooper.late_plates.create( date: Date.today + 2 )
     end

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PhraseTest < ActiveSupport::TestCase
   def setup
-    @cooper = FactoryGirl.create(:cooper)
+    @cooper = create(:cooper)
   end
 
   test "a cooper can only have 3 phrases" do

@@ -2,8 +2,8 @@ require 'test_helper'
 
 class PhrasesControllerTest < ActionController::TestCase
   def setup
-    @cooper = FactoryGirl.create(:cooper)
-    @elmwooder = FactoryGirl.create(:elmwooder)
+    @cooper = create(:cooper)
+    @elmwooder = create(:elmwooder)
   end
 
   test "index shows a cooper's phrases" do

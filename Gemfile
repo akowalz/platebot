@@ -26,7 +26,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'twilio-ruby'
 gem 'chronic'
 gem 'pg'
-gem 'obscenity'
 gem 'sentry-raven'
 
 # Use ActiveModel has_secure_password
@@ -39,6 +38,8 @@ gem 'sentry-raven'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  gem "pry"
+  gem "faker"
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'sqlite3'

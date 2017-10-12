@@ -17,9 +17,11 @@ OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
 })
 
 DatabaseCleaner.strategy = :transaction
+Faker::Config.locale = "en-US"
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+  include FactoryGirl::Syntax::Methods
   fixtures :all
 
   include SessionsHelper

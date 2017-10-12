@@ -3,7 +3,7 @@ require 'test_helper'
 class MessagesServiceTest < ActiveSupport::TestCase
 
   def setup
-    @cooper = FactoryGirl.create(:cooper)
+    @cooper = create(:cooper)
   end
 
   test "adds late plates for coopers" do
@@ -69,7 +69,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
   end
 
   test "fetch returns the plates tonight" do
-    @cooper2 = FactoryGirl.create(:cooper, number: "+12344322344", house: House.foster)
+    @cooper2 = create(:cooper, number: "+12344322344", house: House.foster)
     @cooper2.late_plates.create
     @cooper.late_plates.create
     @cooper.late_plates.create( date: 1.day.from_now )
@@ -90,7 +90,7 @@ class MessagesServiceTest < ActiveSupport::TestCase
 
   test "fetch returns the plates tonight for the right house" do
     @cooper.late_plates.create
-    @elmwooder = FactoryGirl.create(:elmwooder)
+    @elmwooder = create(:elmwooder)
     @elmwooder.late_plates.create
 
     response = MessagesService.respond_to_message(@elmwooder, "fetch")

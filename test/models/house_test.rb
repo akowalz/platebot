@@ -4,8 +4,8 @@ class HouseTest < ActiveSupport::TestCase
   def setup
     @foster = House.foster
     @elmwood = House.elmwood
-    @cooper = FactoryGirl.create(:cooper)
-    @elmwooder = FactoryGirl.create(:elmwooder)
+    @cooper = create(:cooper)
+    @elmwooder = create(:elmwooder)
   end
 
   test "gets daily late plates for a house" do

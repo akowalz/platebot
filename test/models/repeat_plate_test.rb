@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RepeatPlateTest < ActiveSupport::TestCase
   def setup
-    @cooper = FactoryGirl.create(:cooper)
+    @cooper = create(:cooper)
   end
 
   def teardown

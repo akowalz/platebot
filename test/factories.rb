@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :cooper do
-    fname "Chip"
-    lname "Witly"
+    fname { Faker::Name.first_name }
+    lname { Faker::Name.last_name }
     house { House.foster }
-    sequence(:number) { "+1914406#{rand(9999).to_s.rjust(4, "0")}" }
-    uid "123456789"
+    number { Faker::PhoneNumber.cell_phone }
+    uid { Faker::Number }
     sms_confirmed true
     sms_confirmation_code "1234"
   end

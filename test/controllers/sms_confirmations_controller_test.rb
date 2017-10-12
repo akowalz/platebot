@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SmsConfirmationsControllerTest < ActionController::TestCase
   def setup
-    @cooper = FactoryGirl.create(:cooper, sms_confirmed: false)
+    @cooper = create(:cooper, sms_confirmed: false)
   end
 
   def teardown

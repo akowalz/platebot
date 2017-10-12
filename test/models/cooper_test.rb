@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CooperTest < ActiveSupport::TestCase
   def setup
-    @cooper = FactoryGirl.create(:cooper)
+    @cooper = create(:cooper)
   end
 
   test "valid coopers are valid" do
@@ -47,7 +47,8 @@ class CooperTest < ActiveSupport::TestCase
   end
 
   test "does not allow two users to have the same phone number" do
-    copy = Cooper.new(fname: "a", lname: "b", number: @cooper.number, house_id: 1)
+    copy = build(:cooper, number: @cooper.number)
+
     assert_not copy.valid?
     assert_not copy.save
   end
