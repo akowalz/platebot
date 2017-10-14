@@ -11,7 +11,7 @@ class TwilioClient
         from: FROM_NUMBER,
       ) if Rails.env.production?
 
-      Rails.logger.info("Sent text message #{message} to #{number} via Twilio")
+      Rails.logger.info("Sent text message '#{message}' to #{number} via Twilio")
     end
 
     def client

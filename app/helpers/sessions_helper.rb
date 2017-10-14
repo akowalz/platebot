@@ -5,7 +5,7 @@ module SessionsHelper
 
   def sign_out
     cookies[:cooper_id] = nil
-    @cuurent_user = nil
+    @current_user = nil
   end
 
   def current_user
