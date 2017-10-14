@@ -6,5 +6,38 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 #
-House.create(name: "The Zooo")
-House.create(name: "The Treehouse")
+
+include FactoryGirl::Syntax::Methods
+
+DatabaseCleaner.clean_with(:truncation)
+
+puts "Creating houses"
+houses = [
+  the_zooo = House.create(name: House::Mosaic::THE_ZOOO),
+  the_treehouse = House.create(name: House::Mosaic::THE_TREEHOUSE),
+]
+
+
+puts "Creating coopers"
+10.times do
+  houses.each do |house|
+    create(
+      :cooper,
+      house: house,
+    )
+  end
+end
+
+puts "Creating late plates"
+Cooper.all.each do |cooper|
+  create(:late_plate, cooper: cooper)
+  create(:late_plate, :past, cooper: cooper)
+
+  if rand > 0.5
+    create(:late_plate, :for_today, cooper: cooper)
+  end
+
+  if rand > 0.8
+    create(:repeat_plate, cooper: cooper)
+  end
+end
