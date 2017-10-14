@@ -8,29 +8,66 @@
   <h4>
     <%= "House: #{cooper.house.name}" %>
   </h4>
-  <%= link_to "Add a plate for today",
-    late_plates_path(cooper),
-    method: :post,
-    class: "btn btn-primary btn-lg
-    #{'disabled' if cooper.has_plate_for_today}"
+
+  <h4>Current co-op member?:</h4>
+
+  <div class="btn-group" role="group">
+    <%=
+      link_to(
+        "Yes",
+        cooper_path(cooper, cooper: {current_member: true}),
+        class: "btn btn-md btn-#{cooper.current_member? ? 'success' : 'default'}",
+        method: :patch,
+      )
+    %>
+  <%=
+    link_to(
+      "No",
+      cooper_path(cooper, cooper: {current_member: false}),
+      class: "btn btn-md btn-#{!cooper.current_member? ? 'danger' : 'default'}",
+      method: :patch,
+    )
   %>
+</div>
+
+
+<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+</div>
+
+<hr/>
+
+<%= link_to "Add a plate for today",
+  late_plates_path(cooper),
+  method: :post,
+  class: "btn btn-primary btn-lg
+  #{'disabled' if cooper.has_plate_for_today}"
+%>
 
   <h4>your weekly repeat plates:</h4>
   <div class="btn-group-vertical" role="group">
     <% 5.times do |day| %>
       <% if cooper.has_repeat_plate_for(day) %>
-        <%= link_to Date::DAYNAMES[day],
-                    cooper_repeat_plate_path(cooper, cooper.repeat_plates.for_day(day).last.id),
-                    method: :delete,
-                    class: "btn btn-lg btn-block btn-warning" %>
+        <%=
+          link_to(
+            Date::DAYNAMES[day],
+            cooper_repeat_plate_path(cooper, cooper.repeat_plates.for_day(day).last.id),
+            method: :delete,
+            class: "btn btn-lg btn-block btn-warning",
+          )
+        %>
       <% else %>
-        <%= link_to Date::DAYNAMES[day],
-                    cooper_repeat_plates_path(cooper, day: day),
-                    method: :post,
-                    class: "btn btn-lg btn-default btn-block" %>
+        <%=
+          link_to(
+            Date::DAYNAMES[day],
+            cooper_repeat_plates_path(cooper, day: day),
+            method: :post,
+            class: "btn btn-lg btn-default btn-block",
+          )
+        %>
       <% end %>
     <% end %>
   </div>
+
   <hr/>
   <%= link_to "Add phrases to send to coopers!",
     cooper_phrases_path(cooper),

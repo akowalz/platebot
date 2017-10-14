@@ -9,6 +9,6 @@ module SessionsHelper
   end
 
   def current_user
-    @current_user ||= Cooper.find_by_id(cookies[:cooper_id])
+    @current_user ||= Cooper.find_by(id: cookies[:cooper_id])
   end
 end

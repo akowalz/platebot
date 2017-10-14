@@ -47,6 +47,7 @@ class CoopersController < ApplicationController
       :house_id,
       :number,
       :uid,
+      :current_member,
     )
   end
 end
