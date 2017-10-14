@@ -9,7 +9,7 @@ class TwilioClient
         body: message,
         to: number,
         from: FROM_NUMBER,
-      ) unless Rails.env.test?
+      ) if Rails.env.production?
 
       Rails.logger.info("Sent text message #{message} to #{number} via Twilio")
     end
