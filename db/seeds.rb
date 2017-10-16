@@ -28,6 +28,8 @@ puts "Creating coopers"
   end
 end
 
+create(:cooper, :admin)
+
 puts "Creating late plates"
 Cooper.all.each do |cooper|
   create(:late_plate, cooper: cooper)
@@ -37,7 +39,9 @@ Cooper.all.each do |cooper|
     create(:late_plate, :for_today, cooper: cooper)
   end
 
-  if rand > 0.8
-    create(:repeat_plate, cooper: cooper)
+  5.times do |day|
+    if rand > 0.8
+      create(:repeat_plate, cooper: cooper, day: day)
+    end
   end
 end

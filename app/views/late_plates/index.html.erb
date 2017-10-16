@@ -2,25 +2,26 @@
   <div class="<%= current_user ? 'col-md-10' : 'col-md-12'%>">
     <div class="row">
       <div class="col-md-10">
-        <h1> <%= @today %> </h1>
+        <h1> <%= Date.today.readable %> </h1>
       </div>
     </div>
 
     <hr>
 
-    <div class="row">
-      <% if !current_user || current_user.lives_in_foster? %>
-        <div class="col-md-6">
-          <h2>The Zooo</h2>
-          <%= render "plate_table", { plates: @foster_plates } %>
-        </div>
-      <% end %>
 
-      <% if !current_user || current_user.lives_in_elmwood? %>
-        <div class="col-md-6">
-          <h2>The Treehouse</h2>
-          <%= render "plate_table", { plates: @elmwood_plates } %>
-        </div>
+    <div class="row">
+      <% @houses.each do |house| %>
+        <% if !current_user || current_user.lives_in?(house) %>
+          <div class="col-md-6 house">
+            <h2>
+              <%= house.name %>
+              <small class="right">
+                <%= link_to("(view members)", coopers_path) if current_user.try(:admin?) %>
+              </small>
+            </h2>
+            <%= render "plate_table", { plates: house.all_plates_for_today } %>
+          </div>
+        <% end %>
       <% end %>
     </div>
 

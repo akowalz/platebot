@@ -3,6 +3,8 @@ require 'test_helper'
 class CoopersControllerTest < ActionController::TestCase
   def setup
     @cooper = create(:cooper)
+    @admin = create(:cooper, :admin)
+    request.env["HTTP_REFERER"] = root_path
   end
 
   def teardown
@@ -90,5 +92,24 @@ class CoopersControllerTest < ActionController::TestCase
     assert_not_equal invalid_number, @cooper.number
     assert_template "edit"
     assert_not_nil flash.now[:error]
+  end
+
+  test "#index lists all coopers" do
+    sign_in(@admin)
+
+    get :index
+
+    assert_template "coopers/index"
+    Cooper.all.each do |cooper|
+      assert_select("td", cooper.full_name)
+    end
+  end
+
+  test "#index only allows admins" do
+    sign_in(@cooper)
+
+    get :index
+
+    assert_redirected_to(root_path)
   end
 end

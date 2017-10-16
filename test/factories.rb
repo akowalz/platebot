@@ -8,6 +8,11 @@ FactoryGirl.define do
     sms_confirmed true
     sms_confirmation_code "1234"
     current_member true
+    admin false
+
+    trait :admin do
+      admin true
+    end
   end
 
   factory :elmwooder, parent: :cooper do

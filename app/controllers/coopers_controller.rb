@@ -3,6 +3,7 @@ require 'twilio-ruby'
 class CoopersController < ApplicationController
   before_action :lookup_cooper, only: [:edit, :update]
   before_action :verify_current_user, only: [:edit, :update]
+  before_action :verify_user_is_admin, only: [:index]
 
   def create
     @cooper = Cooper.new(cooper_params)
@@ -21,13 +22,17 @@ class CoopersController < ApplicationController
     end
   end
 
+  def index
+    @houses = House.all
+  end
+
   def edit
   end
 
   def update
     if @cooper.update_attributes(cooper_params)
-      flash[:success] = "Your info has been updated!"
-      redirect_to root_path
+      flash[:success] = "Cooper info updated!"
+      redirect_to(:back)
     else
       flash.now[:error] = @cooper.errors.full_messages
       render 'edit'
@@ -48,6 +53,7 @@ class CoopersController < ApplicationController
       :number,
       :uid,
       :current_member,
+      :admin,
     )
   end
 end

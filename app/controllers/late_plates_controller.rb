@@ -17,10 +17,7 @@ class LatePlatesController < ApplicationController
   end
 
   def index
-    @foster_plates  = House.foster.all_plates_for_today
-    @elmwood_plates = House.elmwood.all_plates_for_today
-
-    @today = DateTime.now.readable
+    @houses = House.all
 
     if current_user
       @upcoming = current_user.house.upcoming_plates

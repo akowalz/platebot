@@ -1,6 +1,6 @@
 <div class="col-md-2" id="user-panel">
   <h2>
-    <%= "#{cooper.name}" %>
+    <%= cooper.name %>
     <small class="right">
       <%= link_to "(edit my info)", edit_cooper_path(current_user) %>
     </small>
@@ -11,25 +11,7 @@
 
   <h4>Current co-op member?:</h4>
 
-  <div class="btn-group" role="group">
-    <%=
-      link_to(
-        "Yes",
-        cooper_path(cooper, cooper: {current_member: true}),
-        class: "btn btn-md btn-#{cooper.current_member? ? 'success' : 'default'}",
-        method: :patch,
-      )
-    %>
-  <%=
-    link_to(
-      "No",
-      cooper_path(cooper, cooper: {current_member: false}),
-      class: "btn btn-md btn-#{!cooper.current_member? ? 'danger' : 'default'}",
-      method: :patch,
-    )
-  %>
-</div>
-
+  <%= render "coopers/membership_toggle", { cooper: cooper } %>
 
 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 </div>

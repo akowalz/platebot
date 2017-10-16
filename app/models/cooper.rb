@@ -49,16 +49,24 @@ class Cooper < ActiveRecord::Base
     self.fname
   end
 
+  def full_name
+    "#{fname} #{lname}"
+  end
+
   def initialized_name
     "#{self.fname} #{self.lname[0]}."
   end
 
+  def lives_in?(house)
+    self.house == house
+  end
+
   def lives_in_foster?
-    house == House.foster
+    lives_in?(House.foster)
   end
 
   def lives_in_elmwood?
-    house == House.elmwood
+    lives_in?(House.elmwood)
   end
 
   def Cooper.clean_number(number)

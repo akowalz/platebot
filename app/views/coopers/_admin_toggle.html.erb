@@ -1,0 +1,18 @@
+<div class="btn-group" role="group">
+  <%=
+    link_to(
+      "Yes",
+      cooper_path(cooper, cooper: {admin: true}),
+      class: "btn btn-md btn-#{cooper.admin? ? 'success' : 'default'}",
+      method: :patch,
+    )
+  %>
+  <%=
+    link_to(
+      "No",
+      cooper_path(cooper, cooper: {admin: false}),
+      class: "btn btn-md btn-#{!cooper.admin? ? 'danger' : 'default'}",
+      method: :patch,
+    )
+  %>
+</div>
