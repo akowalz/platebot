@@ -13,8 +13,10 @@ class Cooper < ActiveRecord::Base
   validates_format_of :number, { with: /\A\+1\d{10}\z/ }
 
   def set_initial_attributes
-    self.sms_confirmation_code = rand(9999).to_s.rjust(4, "0")
-    self.current_member = true
+    assign_attributes(
+      sms_confirmation_code: rand(9999).to_s.rjust(4, "0"),
+      current_member: true,
+    )
   end
 
   # all plates
