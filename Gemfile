@@ -25,7 +25,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'twilio-ruby'
 gem 'chronic'
-gem 'pg'
+gem 'pg', '~> 0.20.0'
 gem 'sentry-raven'
 
 # Use ActiveModel has_secure_password
