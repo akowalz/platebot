@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   root 'late_plates#index'
 
+  get 'test' => "application#test"
+
   resources :late_plates, only: [:create, :destroy]
   post 'add' => "late_plates#twilio_endpoint"
   get 'help' => "late_plates#help"
@@ -24,11 +26,13 @@ Rails.application.routes.draw do
   resource :sessions, only: [:create, :destroy]
   delete "signout" => "sessions#destroy"
 
-  get 'api' => "late_plates#api"
-
   get 'textsim' => "text_sim#new"
 
   get "error" => "application#error"
+
+  namespace :api do
+    resources :coopers
+  end
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

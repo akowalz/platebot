@@ -28,8 +28,8 @@
               <% end %>
             </div>
           </td>
-          <td><%= render "membership_toggle", { cooper: cooper } %></td>
-          <td><%= render "admin_toggle", { cooper: cooper } %></td>
+          <td><%= react_component("CooperBooleanToggle", cooper: cooper, booleanAttributeName: "current_member")%></td>
+          <td><%= react_component("CooperBooleanToggle", cooper: cooper, booleanAttributeName: "admin" )%></td>
         </tr>
       <% end %>
     </tbody>

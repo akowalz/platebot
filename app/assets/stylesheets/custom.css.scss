@@ -38,6 +38,20 @@ body {
   font-size: 0.45em;
 }
 
+.toggle-update-notice {
+  font-size: 0.8em;
+  color: grey;
+  padding-left: 5px;
+  width: 25px;
+  &.showing { 
+    opacity: 100;
+  }
+  &.hiding { 
+    opacity: 0;
+    transition: opacity 1s ease-out;
+  }
+} 
+
 #quick-reference {
   td:first-child {
     font-style: italic;

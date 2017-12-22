@@ -11,7 +11,7 @@
 
   <h4>Current co-op member?:</h4>
 
-  <%= render "coopers/membership_toggle", { cooper: cooper } %>
+  <%= react_component("CooperBooleanToggle", cooper: @current_user, booleanAttributeName: "current_member") %>
 
 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 </div>

@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
     raise "intentionally raising error"
   end
 
+  def test
+    render json: {message: "Hello from platebot!"}
+  end
+
   private
 
   def verify_current_user
