@@ -25,7 +25,7 @@ class CoopersController < ApplicationController
   def index
     @houses = House
       .includes(:coopers, coopers: :repeat_plates)
-      .order("coopers.created_at")
+      .order("coopers.created_at DESC")
       .all
   end
 
