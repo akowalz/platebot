@@ -20,6 +20,7 @@ class SessionsControllerTest < ActionController::TestCase
     @cooper = Cooper.create(@cooper_params)
 
     post :create
+
     assert_equal cookies[:cooper_id], @cooper.id
     assert_not_nil flash[:success]
     assert_redirected_to root_path
@@ -30,13 +31,15 @@ class SessionsControllerTest < ActionController::TestCase
     @cooper = Cooper.create(@cooper_params)
 
     post :create
+
     assert_nil cookies[:cooper_id]
-    assert_template 'coopers/new'
   end
 
   test "it signs out logged in users" do
     @cooper = Cooper.create(@cooper_params)
+
     delete :destroy
+
     assert_nil cookies[:cooper_id]
   end
 end

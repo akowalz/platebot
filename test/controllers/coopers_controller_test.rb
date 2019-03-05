@@ -13,7 +13,7 @@ class CoopersControllerTest < ActionController::TestCase
 
   test "#create creates a cooper with valid information" do
     assert_difference -> { Cooper.count } do
-      post :create,
+      post :create, params: {
         cooper: {
           fname: "foo",
           lname: "bar",
@@ -21,6 +21,7 @@ class CoopersControllerTest < ActionController::TestCase
           number: "+12225556666",
           uid: "123abc456",
         }
+      }
 
       assert_redirected_to new_cooper_sms_confirmation_path(Cooper.find_by(uid: "123abc456"))
       assert cookies[:cooper_id]
@@ -29,14 +30,16 @@ class CoopersControllerTest < ActionController::TestCase
 
   test "#create does not create cooper with invalid information" do
     assert_no_difference -> { Cooper.count } do
-      post :create,
+      post :create, params: {
         cooper: {
-        fname: "Foo",
-        lname: "Bar",
-        house_id: 0,
-        number: "+14446666",
-        uid: "123abc",
+          fname: "Foo",
+          lname: "Bar",
+          house_id: 0,
+          number: "+14446666",
+          uid: "123abc",
+        }
       }
+
       assert_redirected_to new_cooper_path
       assert_not_nil flash[:error]
       assert_not cookies[:cooper_id]
@@ -46,7 +49,7 @@ class CoopersControllerTest < ActionController::TestCase
   test "#edit users can view form to edit their information" do
     sign_in(@cooper)
 
-    get :edit, { id: @cooper.id.to_s }
+    get :edit, params: { id: @cooper.id.to_s }
 
     assert_response :success
     assert_select "form"
@@ -59,7 +62,7 @@ class CoopersControllerTest < ActionController::TestCase
     new_first = "Bill"
     new_last = "Ready"
 
-    patch :update,
+    patch :update, params: {
       id: @cooper.id.to_s,
       cooper: {
         fname: new_first,
@@ -67,6 +70,7 @@ class CoopersControllerTest < ActionController::TestCase
         number: new_number,
         house_id: 0,
       }
+    }
 
     assert_equal "+11112223333", @cooper.reload.number
     assert_equal new_first, @cooper.fname
@@ -80,7 +84,7 @@ class CoopersControllerTest < ActionController::TestCase
 
     invalid_number = "111-22-3333"
 
-    patch :update,
+    patch :update, params: {
       id: @cooper.id.to_s,
       cooper: {
         fname: @cooper.fname,
@@ -88,9 +92,9 @@ class CoopersControllerTest < ActionController::TestCase
         number: invalid_number,
         house_id: 0,
       }
+    }
 
     assert_not_equal invalid_number, @cooper.number
-    assert_template "edit"
     assert_not_nil flash.now[:error]
   end
 
@@ -99,7 +103,6 @@ class CoopersControllerTest < ActionController::TestCase
 
     get :index
 
-    assert_template "coopers/index"
     Cooper.all.each do |cooper|
       assert_select("td", cooper.full_name)
     end

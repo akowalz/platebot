@@ -13,9 +13,10 @@ class RepeatPlatesControllerTest < ActionController::TestCase
     day = (0..4).to_a.sample
 
     assert_difference -> { @cooper.repeat_plates.count }, +1 do
-      post :create,
+      post :create, params: {
         cooper_id: @cooper.id.to_s,
         day: day
+      }
     end
 
     assert @cooper.has_repeat_plate_for(day), "Cooper should have plate for #{day}"
@@ -26,9 +27,10 @@ class RepeatPlatesControllerTest < ActionController::TestCase
     @cooper.repeat_plates.create(day: day)
 
     assert_no_difference -> { @cooper.repeat_plates.count } do
-      post :create,
+      post :create, params: {
         cooper_id: @cooper.id.to_s,
         day: day
+      }
     end
   end
 
@@ -38,9 +40,10 @@ class RepeatPlatesControllerTest < ActionController::TestCase
     plate_id = @cooper.repeat_plates.last.id.to_s
 
     assert_difference -> { @cooper.repeat_plates.count }, -1 do
-      delete :destroy,
+      delete :destroy, params: {
         cooper_id: @cooper.id.to_s,
         id: plate_id
+      }
     end
 
     assert_not @cooper.has_repeat_plate_for(day)

@@ -10,9 +10,10 @@ class SmsConfirmationsControllerTest < ActionController::TestCase
   end
 
   test "#create sms confirmation with valid confirmation code" do
-    post :create,
+    post :create, params: { 
       cooper_id: @cooper.id.to_s,
       cooper: { sms_confirmation_code: @cooper.sms_confirmation_code }
+    }
 
     assert @cooper.reload.sms_confirmed?
     assert_not_nil flash[:success]
@@ -20,9 +21,10 @@ class SmsConfirmationsControllerTest < ActionController::TestCase
   end
 
   test "#create confirmation with invalid confirmation code" do
-    post :create,
+    post :create, params: {
       cooper_id: @cooper.id.to_s,
       cooper: { sms_confirmation_code: "invalid" }
+    }
 
     assert_not @cooper.reload.sms_confirmed?
     assert_not_nil flash[:error]
@@ -30,8 +32,8 @@ class SmsConfirmationsControllerTest < ActionController::TestCase
   end
 
   test "#new renders" do
-    get :new, cooper_id: @cooper.id.to_s
+    get :new, params: { cooper_id: @cooper.id.to_s }
 
-    assert_template "sms_confirmations/new"
+    assert_response :success
   end
 end

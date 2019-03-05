@@ -21,7 +21,7 @@ Faker::Config.locale = "en-US"
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-  include FactoryGirl::Syntax::Methods
+  include FactoryBot::Syntax::Methods
   fixtures :all
 
   include SessionsHelper

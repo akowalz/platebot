@@ -32,7 +32,7 @@ class CoopersController < ApplicationController
   def update
     if @cooper.update_attributes(cooper_params)
       flash[:success] = "Cooper info updated!"
-      redirect_to(:back)
+      redirect_back fallback_location: root_path
     else
       flash.now[:error] = @cooper.errors.full_messages
       render 'edit'

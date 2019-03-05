@@ -5,13 +5,15 @@ class LatePlatesController < ApplicationController
 
     cooper = Cooper.find_by(number: from_number)
     if cooper.nil? || !cooper.sms_confirmed?
-      render status: 403, nothing: true, layout: false
+      render status: 403, body: nil, layout: false
       return
     end
 
-    message = MessagesService.respond_to_message(cooper, message_body)
+    text = MessagesService.respond_to_message(cooper, message_body)
 
-    twiml = Twilio::TwiML::Response.new { |r| r.Message(message) }
+    twiml = Twilio::TwiML::MessagingResponse.new.message do |message|
+      message.body(text)
+    end
 
     render xml: twiml.to_xml, layout: false
   end

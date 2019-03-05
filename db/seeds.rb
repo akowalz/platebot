@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 #
 
-include FactoryGirl::Syntax::Methods
+include FactoryBot::Syntax::Methods
 
 DatabaseCleaner.clean_with(:truncation)
 

@@ -36,7 +36,7 @@
           <% if current_user %>
             <p>
               Have an idea to make PlateBot better? Found a bug? Just want to say hey?
-              <%= link_to("Submit feedback here!", feedback_path) %>
+              <%= mail_to("platebotfeedback@gmail.com", "Submit feedback!", subject: "Platebot Feedback") %>
             </p>
           <% end %>
         </div>

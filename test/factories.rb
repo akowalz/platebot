@@ -1,17 +1,17 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :cooper do
     fname { Faker::Name.first_name }
     lname { Faker::Name.last_name }
     house { House.foster }
     number { "+1#{rand(10 ** 10).to_s.rjust(10, '0')}" }
     uid { Faker::Number }
-    sms_confirmed true
-    sms_confirmation_code "1234"
-    current_member true
-    admin false
+    sms_confirmed { true }
+    sms_confirmation_code { "1234" }
+    current_member { true }
+    admin { false }
 
     trait :admin do
-      admin true
+      admin { true }
     end
   end
 

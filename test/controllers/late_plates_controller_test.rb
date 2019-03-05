@@ -13,14 +13,14 @@ class LatePlatesControllerTest < ActionController::TestCase
 
   test "adds late plates for coopers" do
     assert_difference -> { LatePlate.count } do
-      post :twilio_endpoint, { From: @cooper.number, Body: "Today" }
+      post :twilio_endpoint, params: { From: @cooper.number, Body: "Today" }
     end
 
     assert_equal 1, @cooper.late_plates.count
   end
 
   test "returns a 403 for strangers" do
-    post :twilio_endpoint, { From: "+5235556666", Body: "Today" }
+    post :twilio_endpoint, params: { From: "+5235556666", Body: "Today" }
 
     assert_response 403
   end
@@ -28,7 +28,7 @@ class LatePlatesControllerTest < ActionController::TestCase
   test "returns 403 for accounts that have not been sms_confirmed" do
     @cooper = create(:cooper, sms_confirmed: false)
 
-    post :twilio_endpoint, { From: @cooper.number, Body: "Today" }
+    post :twilio_endpoint, params: { From: @cooper.number, Body: "Today" }
 
     assert_response 403
   end
@@ -121,7 +121,7 @@ class LatePlatesControllerTest < ActionController::TestCase
     @cooper.late_plates.create
 
     assert_difference -> { @cooper.late_plates.count }, -1 do
-      delete :destroy, id: @cooper.late_plates.last.id
+      delete :destroy, params: { id: @cooper.late_plates.last.id }
     end
 
     assert flash[:success]

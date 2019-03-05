@@ -10,21 +10,21 @@ class PhrasesControllerTest < ActionController::TestCase
     sign_in @cooper
     @cooper.phrases.create( text: "my cool phrase" )
 
-    get :index, cooper_id: @cooper
+    get :index, params: { cooper_id: @cooper }
     assert_response :success
     assert_select "li.phrase", count: 1
     assert_match "my cool phrase", response.body
   end
 
   test "only shows a signed in users own phrases" do
-    get :index, cooper_id: @cooper
+    get :index, params: { cooper_id: @cooper }
     assert_redirected_to root_path
     assert_not_nil flash[:warning]
   end
 
   test "only shows a user their own phrases" do
     sign_in @elmwooder
-    get :index, cooper_id: @cooper
+    get :index, params: { cooper_id: @cooper }
     assert_redirected_to root_path
     assert_not_nil flash[:warning]
   end
@@ -32,7 +32,7 @@ class PhrasesControllerTest < ActionController::TestCase
   test "create adds a phrase" do
     sign_in @cooper
     assert_difference -> { @cooper.phrases.count } do
-      post :create, cooper_id: @cooper.id, phrase: { text: "cool text" }
+      post :create, params: { cooper_id: @cooper.id, phrase: { text: "cool text" } }
     end
 
     assert_equal @cooper.phrases.last.text, "cool text"
@@ -41,7 +41,7 @@ class PhrasesControllerTest < ActionController::TestCase
   test "create won't add an invalid phrase" do
     sign_in @cooper
     assert_no_difference -> { @cooper.phrases.count } do
-      post :create, cooper_id: @cooper.id, phrase: { text: "a" * 61 }
+      post :create, params: { cooper_id: @cooper.id, phrase: { text: "a" * 61 } }
     end
 
     assert_match "too long", flash[:error].first
@@ -52,7 +52,7 @@ class PhrasesControllerTest < ActionController::TestCase
     3.times { @cooper.phrases.create( text: "gdlkj" ) }
 
     assert_no_difference -> { @cooper.phrases.count } do
-      post :create, cooper_id: @cooper.id, phrase: { text: "not allowed" }
+      post :create, params: { cooper_id: @cooper.id, phrase: { text: "not allowed" } }
     end
 
     assert_match "only", flash[:error].first
@@ -63,7 +63,7 @@ class PhrasesControllerTest < ActionController::TestCase
     @cooper.phrases.create( text: "asdjgliasjdg" )
 
     assert_difference -> { @cooper.phrases.all.count }, -1 do
-      delete :destroy, id: @cooper.phrases.last.id, cooper_id: @cooper.id
+      delete :destroy, params: { id: @cooper.phrases.last.id, cooper_id: @cooper.id }
     end
 
     assert_not_nil flash[:success]
@@ -73,7 +73,7 @@ class PhrasesControllerTest < ActionController::TestCase
     sign_in @cooper
     3.times { @cooper.phrases.create( text: "gdlkj" ) }
 
-    get :index, cooper_id: @cooper
+    get :index, params: { cooper_id: @cooper }
 
     assert_select "form", false
   end
