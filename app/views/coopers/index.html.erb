@@ -13,16 +13,14 @@
       </tr>
     </thead>
     <tbody>
-      <% house.coopers.order("created_at DESC").each do |cooper| %>
+      <% house.coopers.each do |cooper| %>
         <tr>
           <td><%= cooper.full_name %></td>
           <th><%= cooper.created_at.strftime("%B %-e, %Y") %></th>
           <td>
             <div class="btn-group" role="group">
               <% 5.times do |day| %>
-                <button
-                  class="btn btn-<%= cooper.has_repeat_plate_for(day) ? 'warning' : 'default' %>"
-                  >
+                <button class="btn btn-<%= cooper.repeat_plates.any? { |p| p.day == day } ? 'warning' : 'default' %>" >
                   <%= Date::DAYNAMES[day].first %>
                 </button>
               <% end %>

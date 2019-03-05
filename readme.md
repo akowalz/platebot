@@ -2,7 +2,7 @@
 
 PlateBot is a way to get dinner saved for you when you're on the go.  It was
 designed for [MOSAIC Co-op](http://mosaiccoop.org), which holds nightly house
-dinners and allows it's members to request "late plates" be saved for them when
+dinners and allows its members to request "late plates" be saved for them when
 they won't be around at dinnertime.  The old system to request a late plate was
 a Google Spreadsheet that members could add themselves to nightly, but this is
 clunky and difficult when you are on the go.  PlateBot utilites the [Twilio

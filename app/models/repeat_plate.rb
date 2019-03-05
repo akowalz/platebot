@@ -9,8 +9,8 @@ class RepeatPlate < ActiveRecord::Base
   scope :for_elmwood, -> { for_house(House.elmwood) }
 
   def self.for_day(day)
-    day = day.wday if day.is_a? DateTime
-    where( day: day )
+    day = day.wday if day.is_a?(DateTime)
+    where(day: day)
   end
 
   def simple_time_with_date

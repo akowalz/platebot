@@ -23,7 +23,10 @@ class CoopersController < ApplicationController
   end
 
   def index
-    @houses = House.all
+    @houses = House
+      .includes(:coopers, coopers: :repeat_plates)
+      .order("coopers.created_at")
+      .all
   end
 
   def edit
