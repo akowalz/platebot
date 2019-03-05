@@ -12,3 +12,27 @@ at home.
 
 PlateBot is hosted at [plate-bot.com](http://www.plate-bot.com).  For
 information about the query interface, see the [help page](http://www.plate-bot.com/help)
+
+## Developing
+
+Create the database (default configuration uses Postgres):
+
+```
+bundle exec rake db:reset
+```
+
+Start the server:
+
+```
+bin/rails s
+```
+
+Run tests:
+
+```
+bin/rails test
+```
+
+### Google Login
+
+A `.env` file is necessary for Google Login.
