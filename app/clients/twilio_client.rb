@@ -5,7 +5,7 @@ class TwilioClient
     FROM_NUMBER = ENV["PLATEBOT_FROM_NUMBER"]
 
     def send_message(message, number)
-      client.account.messages.create(
+      client.api.account.messages.create(
         body: message,
         to: number,
         from: FROM_NUMBER,
